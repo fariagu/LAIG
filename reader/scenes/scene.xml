@@ -38,12 +38,12 @@
         <!-- primeira vista; de cada vez que se pressione a tecla v/V, -->
         <!-- a vista muda para a proxima da lista; da -->
         <!-- ultima vista da lista volta 'a primeira -->
-        <perspective id="defaultPerspective" near="1" far="100" angle="0.1">
+        <perspective id="1" near="1" far="100" angle="0.1">
             <from x="10" y="10" z="10" />
             <to x="1" y="1" z="1" />
         </perspective>
 
-        <perspective id="p2" near="0.5" far="50" angle="0.5">
+        <perspective id="2" near="0.5" far="50" angle="0.5">
             <from x="5" y="5" z="5" />
             <to x="0" y="0" z="0" />
         </perspective>

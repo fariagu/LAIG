@@ -35,6 +35,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	}	
 
     this.parseScene(rootElement);
+    this.parseViews(rootElement);
 
 	this.loadedOk=true;
 	
@@ -106,6 +107,81 @@ MySceneGraph.prototype.parseScene= function(rootElement) {
 	console.log("Scene read from file: {root=" + this.root + ", axis length=" + this.axis_length + "}");
 
 };
+
+MySceneGraph.prototype.parseViews= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('views');
+	if (elements == null) {
+		return "views element is missing.";
+	}
+
+	// various examples of different types of access
+	var views = elements[0];
+	this.default = this.reader.getString(views, 'default');
+
+	console.log("Views read from file: {default=" + this.default + "}");
+
+	this.perspectives=[];
+
+    var from = class {
+        constructor(x, y, z){
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+    };
+
+    var to = class {
+        constructor(x, y, z){
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+    };
+
+    var perspective = class Perspective {
+        constructor(id, near, far, angle, from, to){
+            this.id = id;
+            this.near = near;
+            this.far = far;
+            this.angle = angle;
+            this.from = from;
+            this.to = to;
+        }
+    };
+
+
+    // iterate over every element
+	var nnodes=views.children.length;
+	for (var i=0; i< nnodes; i++)
+	{
+		var e=views.children[i];
+
+		// process each element and store its information
+		perspective.id = e.attributes.getNamedItem("id").value;
+        perspective.near = e.attributes.getNamedItem("near").value;
+        perspective.far = e.attributes.getNamedItem("far").value;
+        perspective.angle = e.attributes.getNamedItem("angle").value;
+
+        var p = e.children[0];
+        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
+        from.x = p.attributes.getNamedItem("x").value;
+        from.y = p.attributes.getNamedItem("y").value;
+        from.z = p.attributes.getNamedItem("z").value;
+        perspective.from = from;
+
+        p = e.children[1];
+        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
+        to.x = p.attributes.getNamedItem("x").value;
+        to.y = p.attributes.getNamedItem("y").value;
+        to.z = p.attributes.getNamedItem("z").value;
+        perspective.to = to;
+
+        this.perspectives.push(perspective);
+		console.log("Read perspective item: {id="+ perspective.id + " near=" + perspective.near + " far=" + perspective.far + " angle=" + perspective.angle + "from=(" + perspective.from.x  + "," + perspective.from.y + "," + perspective.from.z + ")" + "to=(" + perspective.to.x  + "," + perspective.to.y + "," + perspective.to.z + ")" + "}" );
+	};
+
+};
 	
 /*
  * Callback to be executed on any read error
@@ -115,5 +191,3 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	console.error("XML Loading Error: "+message);	
 	this.loadedOk=false;
 };
-
-

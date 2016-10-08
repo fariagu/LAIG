@@ -124,33 +124,9 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 
 	this.perspectives=[];
 
-    var from = class {
-        constructor(x, y, z){
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    };
-
-    var to = class {
-        constructor(x, y, z){
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    };
-
-    var perspective = class Perspective {
-        constructor(id, near, far, angle, from, to){
-            this.id = id;
-            this.near = near;
-            this.far = far;
-            this.angle = angle;
-            this.from = from;
-            this.to = to;
-        }
-    };
-
+    var from = new Point();
+    var to = new Point();
+    var perspective = new Perspective();
 
     // iterate over every element
 	var nnodes=views.children.length;
@@ -205,7 +181,22 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
     }
     else this.local = false;
 
-	console.log("Illumination read from file: {doublesided=" + this.doublesided + ", local=" + this.local + "}");
+	var ambient = new RGBA();
+    var background = new RGBA();
+
+    var e=illumination.children[0];
+    ambient.r = e.attributes.getNamedItem("r").value;
+    ambient.g = e.attributes.getNamedItem("g").value;
+    ambient.b = e.attributes.getNamedItem("b").value;
+    ambient.a = e.attributes.getNamedItem("a").value;
+
+    e=illumination.children[1];
+    background.r = e.attributes.getNamedItem("r").value;
+    background.g = e.attributes.getNamedItem("g").value;
+    background.b = e.attributes.getNamedItem("b").value;
+    background.a = e.attributes.getNamedItem("a").value;
+
+    console.log("Illumination read from file: {doublesided=" + this.doublesided + ", local=" + this.local + "ambient=(" + ambient.r + "," + ambient.g + "," + ambient.b + "," + ambient.a + "), bg=(" + background.r + "," + background.g + "," + background.b + "," + background.a + ")" + "}");
 
 };
 	

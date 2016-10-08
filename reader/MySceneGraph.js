@@ -36,6 +36,7 @@ MySceneGraph.prototype.onXMLReady=function()
 
     this.parseScene(rootElement);
     this.parseViews(rootElement);
+    this.parseIllumination(rootElement);
 
 	this.loadedOk=true;
 	
@@ -180,6 +181,31 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
         this.perspectives.push(perspective);
 		console.log("Read perspective item: {id="+ perspective.id + " near=" + perspective.near + " far=" + perspective.far + " angle=" + perspective.angle + "from=(" + perspective.from.x  + "," + perspective.from.y + "," + perspective.from.z + ")" + "to=(" + perspective.to.x  + "," + perspective.to.y + "," + perspective.to.z + ")" + "}" );
 	};
+
+};
+
+MySceneGraph.prototype.parseIllumination= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('illumination');
+	if (elements == null) {
+		return "illumination element is missing.";
+	}
+
+
+	// various examples of different types of access
+	var illumination = elements[0];
+
+    if (this.reader.getInteger(illumination, 'doublesided') == 1){
+        this.doublesided = true;
+    }
+    else this.doublesided = false;
+
+    if (this.reader.getInteger(illumination, 'local') == 1){
+        this.local = true;
+    }
+    else this.local = false;
+
+	console.log("Illumination read from file: {doublesided=" + this.doublesided + ", local=" + this.local + "}");
 
 };
 	

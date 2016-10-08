@@ -34,6 +34,8 @@ MySceneGraph.prototype.onXMLReady=function()
 		return;
 	}	
 
+    this.parseScene(rootElement);
+
 	this.loadedOk=true;
 	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
@@ -82,6 +84,26 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 		this.list[e.id]=e.attributes.getNamedItem("coords").value;
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
 	};
+
+};
+
+MySceneGraph.prototype.parseScene= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('scene');
+	if (elements == null) {
+		return "scene element is missing.";
+	}
+
+	if (elements.length != 1) {
+		return "either zero or more than one 'scene' element found.";
+	}
+
+	// various examples of different types of access
+	var scene = elements[0];
+	this.root = this.reader.getString(scene, 'root');
+	this.axis_length = this.reader.getInteger(scene, 'axis_length');
+
+	console.log("Scene read from file: {root=" + this.root + ", axis length=" + this.axis_length + "}");
 
 };
 	

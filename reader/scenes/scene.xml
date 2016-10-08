@@ -15,7 +15,7 @@
 <dsx>
 
 
-<!--     <globals background="1 1 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW"/>
+    <globals background="0.2 1 0.3 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW"/>
  
 
     <list>
@@ -24,11 +24,11 @@
         <elem id="3" coords="1 0 0"/>
     </list>
 
-    -->
+
 
     <!-- deve definir-se um objeto para raiz do grafo , assim -->
     <!-- como o comprimento dos tres eixos (cilindros) -->
-    <scene root="rootComp" axis_length="10" />
+    <scene root="rootComp" axis_length="5" />
 
 
     <views default="defaultView" >

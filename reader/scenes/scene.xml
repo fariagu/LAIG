@@ -96,10 +96,10 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="tBrick" file="resources\\images\\brick.jpg" length_s="0.5" length_t="1.1" />
-        <texture id="tGrass" file="resources\\images\\grass.jpg" length_s="0.4" length_t="1.2" />
-        <texture id="tMetal" file="resources\\images\\metal.jpg" length_s="0.3" length_t="1.3" />
-        <texture id="tWood" file="resources\\images\\wood.jpg" length_s="0.2" length_t="1.4" />
+        <texture id="1" file="resources\\images\\brick.jpg" length_s="0.5" length_t="1.1" />
+        <texture id="2" file="resources\\images\\grass.jpg" length_s="0.4" length_t="1.2" />
+        <texture id="3" file="resources\\images\\metal.jpg" length_s="0.3" length_t="1.3" />
+        <texture id="4" file="resources\\images\\wood.jpg" length_s="0.2" length_t="1.4" />
 
     </textures>
 
@@ -108,7 +108,7 @@
 
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="mat1" >
+        <material id="1" >
             <emission r="0.2" g="0.2" b="0.2" a="0.2" />
             <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
             <diffuse r="0" g="0" b="0" a="0" />
@@ -116,7 +116,7 @@
             <shininess value="0.8" />
         </material>
 
-        <material id="mat2" >
+        <material id="2" >
           <emission r="0.2" g="0.2" b="0.2" a="0.2" />
           <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
           <diffuse r="0" g="0" b="0" a="0" />
@@ -124,7 +124,7 @@
           <shininess value="0.8" />
         </material>
 
-        <material id="mat3" >
+        <material id="3" >
           <emission r="0.2" g="0.2" b="0.2" a="0.2" />
           <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
           <diffuse r="0" g="0" b="0" a="0" />
@@ -132,7 +132,7 @@
           <shininess value="0.8" />
         </material>
 
-        <material id="mat4" >
+        <material id="4" >
           <emission r="0.2" g="0.2" b="0.2" a="0.2" />
           <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
           <diffuse r="0" g="0" b="0" a="0" />
@@ -147,7 +147,7 @@
 
         <!-- Deve existir um ou mais blocos "transformation" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <transformation id="transf1">
+        <transformation id="1">
            <!-- instrucoes a usar sem limite nem ordem -->
            <!-- deve existir pelo menos uma transformacao -->
            <translate x="0" y="0" z="1" />
@@ -155,7 +155,7 @@
            <scale x="1" y="2" z="3" />
         </transformation>
 
-        <transformation id="transf1">
+        <transformation id="2">
            <translate x="1" y="2" z="3" />
            <rotate axis="y" angle="90" />
            <scale x="2" y="2" z="2" />
@@ -169,7 +169,7 @@
 
         <!-- Deve existir um ou mais blocos "primitive" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <primitive id="primitive1">
+        <primitive id="1">
 
             <!-- apenas pode existir UMA das seguintes tags: -->
             <!--     rectangle, triangle, cylinder, sphere, torus -->
@@ -189,7 +189,7 @@
 
     <components>
 
-        <component id="component1">
+        <component id="1">
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
@@ -218,8 +218,8 @@
             <!-- ultimo material da lista volta ao primeiro -->
             <materials>
 <!--                 <material id="inherit" /> -->
-                <material id="mat1" />
-                <material id="mat2" />
+                <material id="1" />
+                <material id="2" />
 
             </materials>
 
@@ -230,8 +230,8 @@
             <!-- objecto "pai" -->
 
             <!-- <texture id="inherit" /> -->
-            <texture id="tBrick" />
-            <texture id="tGrass" />
+            <texture id="1" />
+            <texture id="2" />
           
 
             <!-- bloco "children" obrigatorio num "component" -->
@@ -242,16 +242,16 @@
                 <!-- componentes ou primitivas -->
 
                 
-                <componentref id="comp2" />
-                <componentref id="comp3" />
+                <componentref id="2" />
+                <componentref id="3" />
                 
-                <primitiveref id="primitive1" />
+                <primitiveref id="1" />
 
             </children>
 
         </component>
 
-        <component id="comp2">
+        <component id="2">
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
@@ -260,23 +260,23 @@
             </transformation>
 
             <materials>
-                <material id="mat2" />
+                <material id="2" />
                 <material id="inherit" />
                 <material id="default" />
             </materials>
 
 
-            <texture id="tMetal" />
+            <texture id="3" />
 
 
             <children>
 
-                <primitiveref id="rectangle" />
+                <primitiveref id="1" />
             </children>
 
         </component>
 
-        <component id="comp3">
+        <component id="3">
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
@@ -291,17 +291,17 @@
             </materials>
 
 
-            <texture id="tGrass" />
+            <texture id="2" />
 
 
             <children>
-                <componentref id="comp4" />
-                <primitiveref id="primitive1" />
+                <componentref id="4" />
+                <primitiveref id="1" />
             </children>
 
         </component>
 
-        <component id="comp4">
+        <component id="4">
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
@@ -310,7 +310,7 @@
             </transformation>
 
             <materials>
-                <material id="mat4" />
+                <material id="4" />
                 <material id="inherit" />
                 <material id="default" />
             </materials>
@@ -320,7 +320,7 @@
 
 
             <children>
-                <primitiveref id="primitive1" />
+                <primitiveref id="1" />
             </children>
 
         </component>

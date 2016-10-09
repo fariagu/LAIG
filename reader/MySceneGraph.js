@@ -23,6 +23,7 @@ function MySceneGraph(filename, scene) {
     //TODO: replace omni and spot arrays by a single lights array
     this.omnis = [];
     this.spots = [];
+    this.textures = [];
 }
 
 /*
@@ -45,6 +46,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseViews(rootElement);
     this.parseIllumination(rootElement);
     this.parseLights(rootElement);
+    this.parseTextures(rootElement);
 
 	this.loadedOk=true;
 	
@@ -173,10 +175,10 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 
     var nnodes = perspective.length;
     for (var i = 0; i < nnodes; i++){
-        tmpPerspective.id = this.reader.getString(perspective[i], 'id');
-        tmpPerspective.near = this.reader.getString(perspective[i], 'near');
-        tmpPerspective.far= this.reader.getString(perspective[i], 'far');
-        tmpPerspective.angle = this.reader.getString(perspective[i], 'angle');
+        tmpPerspective.id = this.reader.getInteger(perspective[i], 'id');
+        tmpPerspective.near = this.reader.getFloat(perspective[i], 'near');
+        tmpPerspective.far= this.reader.getFloat(perspective[i], 'far');
+        tmpPerspective.angle = this.reader.getFloat(perspective[i], 'angle');
         tmpPerspective.from = this.parsePoint(perspective[i].getElementsByTagName('from')[0]);
         tmpPerspective.to = this.parsePoint(perspective[i].getElementsByTagName('to')[0]);
 
@@ -285,6 +287,32 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
     this.omnis.push(this.parseOmni(lights.getElementsByTagName('omni')[0]));
     this.spots.push(this.parseSpot(lights.getElementsByTagName('spot')[0]));
 
+};
+
+MySceneGraph.prototype.parseTextures= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('textures');
+	if (elements == null) {
+		return "textures element is missing.";
+	}
+
+	// various examples of different types of access
+	var texturesNode = elements[0];
+
+    var texture = texturesNode.getElementsByTagName('texture');
+    var tmpTexture = new Texture();
+
+    var nnodes = texture.length;
+    for (var i = 0; i < nnodes; i++){
+        tmpTexture.id = this.reader.getInteger(texture[i], 'id');
+        tmpTexture.file = this.reader.getString(texture[i], 'file');
+        tmpTexture.length_s= this.reader.getFloat(texture[i], 'length_s');
+        tmpTexture.length_t = this.reader.getFloat(texture[i], 'length_t');
+
+        console.log("Texture - id:" + tmpTexture.id + " file:" + tmpTexture.file + " length_s:" + tmpTexture.length_s + " length_t:" + tmpTexture.length_t);
+
+        this.textures.push(tmpTexture);
+    }
 };
 	
 /*

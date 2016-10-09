@@ -25,6 +25,7 @@ function MySceneGraph(filename, scene) {
     this.spots = [];
     this.textures = [];
     this.materials = [];
+    this.transformations = [];
 }
 
 /*
@@ -49,6 +50,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseLights(rootElement);
     this.parseTextures(rootElement);
     this.parseMaterials(rootElement);
+    this.parseTransformations(rootElement);
 
 	this.loadedOk=true;
 	
@@ -370,6 +372,55 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
         console.log("shininess=" + tmpMaterial.shininess);
 
         this.materials.push(tmpMaterial);
+    }
+};
+
+MySceneGraph.prototype.parseRotate = function(rotateElement) {
+    if (rotateElement == null) {
+		return "rotate element is missing.";
+	}
+
+    var axis, angle;
+
+    axis = this.reader.getString(rotateElement, 'axis');
+    angle = this.reader.getFloat(rotateElement, 'angle');
+
+    return new Rotate(axis, angle);
+}
+
+MySceneGraph.prototype.logRotate = function(rotateObject) {
+   return "axis:" + rotateObject.axis + " angle:" + rotateObject.angle;
+}
+
+MySceneGraph.prototype.parseTransformations= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('transformations');
+	if (elements == null) {
+		return "transformations element is missing.";
+	}
+
+    console.log("--> Parsing Transformations");
+
+	// various examples of different types of access
+	var transformationsNode = elements[0];
+
+    var transformation = transformationsNode.getElementsByTagName('transformation');
+    var tmpTransformation = new Transformation();
+
+    var nnodes = transformation.length;
+    for (var i = 0; i < nnodes; i++){
+        tmpTransformation.id = this.reader.getInteger(transformation[i], 'id');
+
+        tmpTransformation.translate = this.parsePoint(transformation[i].getElementsByTagName('translate')[0]);
+        tmpTransformation.rotate = this.parseRotate(transformation[i].getElementsByTagName('rotate')[0]);
+        tmpTransformation.scale = this.parsePoint(transformation[i].getElementsByTagName('scale')[0]);
+
+        console.log("id:" + tmpTransformation.id);
+        console.log("translate" + this.logPoint(tmpTransformation.translate));
+        console.log("rotate: " + this.logRotate(tmpTransformation.rotate));
+        console.log("scale" + this.logPoint(tmpTransformation.scale));
+
+        this.transformations.push(tmpTransformation);
     }
 };
 	

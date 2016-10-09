@@ -79,3 +79,19 @@ class Material {
         this.shininess = shininess;
     }
 }
+
+class Transformation {
+    constructor(id, translate, rotate, scale){
+        this.id = id;
+        this.translate = translate;
+        this.rotate = rotate;
+        this.scale = scale;
+    }
+}
+
+class Rotate {
+    constructor(axis, angle) {
+        this.axis = axis;
+        this.angle = angle;
+    }
+}

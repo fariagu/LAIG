@@ -16,6 +16,9 @@ function MySceneGraph(filename, scene) {
 	 */
 	 
 	this.reader.open('scenes/'+filename, this);  
+
+    //Initializing arrays
+    this.perspectives = [];
 }
 
 /*
@@ -89,6 +92,36 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 
 };
 
+
+MySceneGraph.prototype.parseRGBA = function(RGBAElement) {
+    if (RGBAElement == null) {
+		return "RGBA element is missing.";
+	}
+
+    var r, g, b, a;
+
+    r = this.reader.getFloat(RGBAElement, 'r');
+    g = this.reader.getFloat(RGBAElement, 'g');
+    b = this.reader.getFloat(RGBAElement, 'b');
+    a = this.reader.getFloat(RGBAElement, 'a');
+
+    return new RGBA(r, g, b, a);
+}
+
+MySceneGraph.prototype.parsePoint = function(PointElement) {
+    if (PointElement == null) {
+		return "Point Element is missing.";
+	}
+
+    var x, y, z;
+
+    x = this.reader.getFloat(PointElement, 'x');
+    y = this.reader.getFloat(PointElement, 'y');
+    z = this.reader.getFloat(PointElement, 'z');
+
+    return new Point(x, y, z);
+}
+
 MySceneGraph.prototype.parseScene= function(rootElement) {
 
 	var elements =  rootElement.getElementsByTagName('scene');
@@ -122,42 +155,21 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 
 	console.log("Views read from file: {default=" + this.default + "}");
 
-	this.perspectives=[];
+    var perspective = views.getElementsByTagName('perspective');
+    var tmpPerspective = new Perspective();
 
-    var from = new Point();
-    var to = new Point();
-    var perspective = new Perspective();
+    var nnodes = perspective.length;
+    for (var i = 0; i < nnodes; i++){
+        tmpPerspective.id = this.reader.getString(perspective[i], 'id');
+        tmpPerspective.near = this.reader.getString(perspective[i], 'near');
+        tmpPerspective.far= this.reader.getString(perspective[i], 'far');
+        tmpPerspective.angle = this.reader.getString(perspective[i], 'angle');
+        tmpPerspective.from = this.parsePoint(perspective[i].getElementsByTagName('from')[0]);
+        tmpPerspective.to = this.parsePoint(perspective[i].getElementsByTagName('to')[0]);
 
-    // iterate over every element
-	var nnodes=views.children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=views.children[i];
-
-		// process each element and store its information
-		perspective.id = e.attributes.getNamedItem("id").value;
-        perspective.near = e.attributes.getNamedItem("near").value;
-        perspective.far = e.attributes.getNamedItem("far").value;
-        perspective.angle = e.attributes.getNamedItem("angle").value;
-
-        var p = e.children[0];
-        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
-        from.x = p.attributes.getNamedItem("x").value;
-        from.y = p.attributes.getNamedItem("y").value;
-        from.z = p.attributes.getNamedItem("z").value;
-        perspective.from = from;
-
-        p = e.children[1];
-        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
-        to.x = p.attributes.getNamedItem("x").value;
-        to.y = p.attributes.getNamedItem("y").value;
-        to.z = p.attributes.getNamedItem("z").value;
-        perspective.to = to;
-
-        this.perspectives.push(perspective);
-		console.log("Read perspective item: {id="+ perspective.id + " near=" + perspective.near + " far=" + perspective.far + " angle=" + perspective.angle + "from=(" + perspective.from.x  + "," + perspective.from.y + "," + perspective.from.z + ")" + "to=(" + perspective.to.x  + "," + perspective.to.y + "," + perspective.to.z + ")" + "}" );
-	};
-
+        console.log("id:" + tmpPerspective.id + " from(" + tmpPerspective.from.x + "," + tmpPerspective.from.y + "," + tmpPerspective.from.z + ")");
+        console.log("id:" + tmpPerspective.id + " to(" + tmpPerspective.to.x + "," + tmpPerspective.to.y + "," + tmpPerspective.to.z + ")");
+    }
 };
 
 MySceneGraph.prototype.parseIllumination= function(rootElement) {
@@ -198,6 +210,57 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 
     console.log("Illumination read from file: {doublesided=" + this.doublesided + ", local=" + this.local + "ambient=(" + ambient.r + "," + ambient.g + "," + ambient.b + "," + ambient.a + "), bg=(" + background.r + "," + background.g + "," + background.b + "," + background.a + ")" + "}");
 
+};
+
+MySceneGraph.prototype.parseLights= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('lights');
+	if (elements == null) {
+		return "lights element is missing.";
+	}
+
+	// various examples of different types of access
+
+	var lights = elements[0];
+
+    var omni = lights.rootElement.getElementsByTagName('omni');
+/*
+	this.perspectives=[];
+
+    var from = new Point();
+    var to = new Point();
+    var perspective = new Perspective();
+
+    // iterate over every element
+	var nnodes=views.children.length;
+	for (var i=0; i< nnodes; i++)
+	{
+		var e=views.children[i];
+
+		// process each element and store its information
+		perspective.id = e.attributes.getNamedItem("id").value;
+        perspective.near = e.attributes.getNamedItem("near").value;
+        perspective.far = e.attributes.getNamedItem("far").value;
+        perspective.angle = e.attributes.getNamedItem("angle").value;
+
+        var p = e.children[0];
+        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
+        from.x = p.attributes.getNamedItem("x").value;
+        from.y = p.attributes.getNamedItem("y").value;
+        from.z = p.attributes.getNamedItem("z").value;
+        perspective.from = from;
+
+        p = e.children[1];
+        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
+        to.x = p.attributes.getNamedItem("x").value;
+        to.y = p.attributes.getNamedItem("y").value;
+        to.z = p.attributes.getNamedItem("z").value;
+        perspective.to = to;
+
+        this.perspectives.push(perspective);
+		console.log("Read perspective item: {id="+ perspective.id + " near=" + perspective.near + " far=" + perspective.far + " angle=" + perspective.angle + "from=(" + perspective.from.x  + "," + perspective.from.y + "," + perspective.from.z + ")" + "to=(" + perspective.to.x  + "," + perspective.to.y + "," + perspective.to.z + ")" + "}" );
+	};
+*/
 };
 	
 /*

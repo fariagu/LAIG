@@ -68,3 +68,14 @@ class Texture {
         this.length_t = length_t;
     }
 }
+
+class Material {
+    constructor(id, emission, ambient, diffuse, specular, shininess){
+        this.id = id;
+        this.emission = emission;
+        this.ambient = ambient;
+        this.diffuse = diffuse;
+        this.specular = specular;
+        this.shininess = shininess;
+    }
+}

@@ -24,6 +24,7 @@ function MySceneGraph(filename, scene) {
     this.omnis = [];
     this.spots = [];
     this.textures = [];
+    this.materials = [];
 }
 
 /*
@@ -47,6 +48,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseIllumination(rootElement);
     this.parseLights(rootElement);
     this.parseTextures(rootElement);
+    this.parseMaterials(rootElement);
 
 	this.loadedOk=true;
 	
@@ -239,7 +241,12 @@ MySceneGraph.prototype.parseOmni = function(omniElement) {
     diffuse = this.parseRGBA(omniElement.getElementsByTagName('diffuse')[0]);
     specular = this.parseRGBA(omniElement.getElementsByTagName('specular')[0]);
 
-    console.log("OMNI - id:" + id + " enabled:" + enabled + " location" + this.logPoint(location) + " ambient" + this.logRGBA(ambient) + " diffuse" + this.logRGBA(diffuse) + " specular" + this.logRGBA(specular));
+    console.log("OMNI - id:" + id);
+    console.log("enabled:" + enabled);
+    console.log("location" + this.logPoint(location));
+    console.log("ambient" + this.logRGBA(ambient));
+    console.log("diffuse" + this.logRGBA(diffuse));
+    console.log("specular" + this.logRGBA(specular));
 
     return new Omni(id, enabled, location, ambient, diffuse, specular);
 }
@@ -267,7 +274,15 @@ MySceneGraph.prototype.parseSpot = function(spotElement) {
     diffuse = this.parseRGBA(spotElement.getElementsByTagName('diffuse')[0]);
     specular = this.parseRGBA(spotElement.getElementsByTagName('specular')[0]);
 
-    console.log("SPOT - id:" + id + " enabled:" + enabled + " angle:" + angle + " exponent:" + exponent + " target" + this.logPoint(target) + " location" + this.logPoint(location) + " ambient" + this.logRGBA(ambient) + " diffuse" + this.logRGBA(diffuse) + " specular" + this.logRGBA(specular));
+    console.log("SPOT - id:" + id);
+    console.log("enabled:" + enabled);
+    console.log("angle:" + angle);
+    console.log("exponent:" + exponent);
+    console.log("target" + this.logPoint(target));
+    console.log("location" + this.logPoint(location));
+    console.log("ambient" + this.logRGBA(ambient));
+    console.log("diffuse" + this.logRGBA(diffuse));
+    console.log("specular" + this.logRGBA(specular));
 
     return new Spot(id, enabled, angle, exponent, target, location, ambient, diffuse, specular);
 }
@@ -278,6 +293,8 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 	if (elements == null) {
 		return "Lights element is missing.";
 	}
+
+    console.log("--> Parsing Lights");
 
 	// various examples of different types of access
 
@@ -296,6 +313,8 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 		return "textures element is missing.";
 	}
 
+    console.log("--> Parsing Textures");
+
 	// various examples of different types of access
 	var texturesNode = elements[0];
 
@@ -309,9 +328,48 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
         tmpTexture.length_s= this.reader.getFloat(texture[i], 'length_s');
         tmpTexture.length_t = this.reader.getFloat(texture[i], 'length_t');
 
-        console.log("Texture - id:" + tmpTexture.id + " file:" + tmpTexture.file + " length_s:" + tmpTexture.length_s + " length_t:" + tmpTexture.length_t);
+        console.log("id:" + tmpTexture.id);
+        console.log("file:" + tmpTexture.file);
+        console.log("length_s:" + tmpTexture.length_s);
+        console.log("length_t:" + tmpTexture.length_t);
 
         this.textures.push(tmpTexture);
+    }
+};
+
+MySceneGraph.prototype.parseMaterials= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('materials');
+	if (elements == null) {
+		return "materials element is missing.";
+	}
+
+    console.log("--> Parsing Materials");
+
+	// various examples of different types of access
+	var materialsNode = elements[0];
+
+    var material = materialsNode.getElementsByTagName('material');
+    var tmpMaterial = new Material();
+
+    var nnodes = material.length;
+    for (var i = 0; i < nnodes; i++){
+        tmpMaterial.id = this.reader.getInteger(material[i], 'id');
+
+        tmpMaterial.emission = this.parseRGBA(material[i].getElementsByTagName('emission')[0]);
+        tmpMaterial.ambient = this.parseRGBA(material[i].getElementsByTagName('ambient')[0]);
+        tmpMaterial.diffuse = this.parseRGBA(material[i].getElementsByTagName('diffuse')[0]);
+        tmpMaterial.specular = this.parseRGBA(material[i].getElementsByTagName('specular')[0]);
+        tmpMaterial.shininess = this.reader.getFloat(material[i].getElementsByTagName('shininess')[0], 'value');
+
+        console.log("id:" + tmpMaterial.id);
+        console.log("emission" + this.logRGBA(tmpMaterial.emission));
+        console.log("ambient" + this.logRGBA(tmpMaterial.ambient));
+        console.log("diffuse" + this.logRGBA(tmpMaterial.diffuse));
+        console.log("specular" + this.logRGBA(tmpMaterial.specular));
+        console.log("shininess=" + tmpMaterial.shininess);
+
+        this.materials.push(tmpMaterial);
     }
 };
 	

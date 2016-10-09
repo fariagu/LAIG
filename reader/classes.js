@@ -35,6 +35,7 @@ class Illumination {
     }
 }
 
+//TODO: Modify Omni and Spot so they descend from a superclass
 class Omni {
     constructor(id, enabled, location, ambient, diffuse, specular){
         this.id = id;

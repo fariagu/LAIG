@@ -20,6 +20,9 @@ function MySceneGraph(filename, scene) {
     //Initializing arrays/variables
     this.perspectives = [];
     this.illuminationNode = new Illumination();
+    //TODO: replace omni and spot arrays by a single lights array
+    this.omnis = [];
+    this.spots = [];
 }
 
 /*
@@ -41,6 +44,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseScene(rootElement);
     this.parseViews(rootElement);
     this.parseIllumination(rootElement);
+    this.parseLights(rootElement);
 
 	this.loadedOk=true;
 	
@@ -109,18 +113,26 @@ MySceneGraph.prototype.parseRGBA = function(RGBAElement) {
     return new RGBA(r, g, b, a);
 }
 
-MySceneGraph.prototype.parsePoint = function(PointElement) {
-    if (PointElement == null) {
+MySceneGraph.prototype.logRGBA = function(RGBAObject) {
+   return "(" + RGBAObject.r + "," + RGBAObject.g + "," + RGBAObject.b + "," + RGBAObject.a + ")";
+}
+
+MySceneGraph.prototype.parsePoint = function(pointElement) {
+    if (pointElement == null) {
 		return "Point Element is missing.";
 	}
 
     var x, y, z;
 
-    x = this.reader.getFloat(PointElement, 'x');
-    y = this.reader.getFloat(PointElement, 'y');
-    z = this.reader.getFloat(PointElement, 'z');
+    x = this.reader.getFloat(pointElement, 'x');
+    y = this.reader.getFloat(pointElement, 'y');
+    z = this.reader.getFloat(pointElement, 'z');
 
     return new Point(x, y, z);
+}
+
+MySceneGraph.prototype.logPoint = function(pointObject) {
+   return "(" + pointObject.x + "," + pointObject.y + "," + pointObject.z + ")";
 }
 
 MySceneGraph.prototype.parseScene= function(rootElement) {
@@ -168,8 +180,8 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
         tmpPerspective.from = this.parsePoint(perspective[i].getElementsByTagName('from')[0]);
         tmpPerspective.to = this.parsePoint(perspective[i].getElementsByTagName('to')[0]);
 
-        console.log("id:" + tmpPerspective.id + " from(" + tmpPerspective.from.x + "," + tmpPerspective.from.y + "," + tmpPerspective.from.z + ")");
-        console.log("id:" + tmpPerspective.id + " to(" + tmpPerspective.to.x + "," + tmpPerspective.to.y + "," + tmpPerspective.to.z + ")");
+        console.log("id:" + tmpPerspective.id + " from" + this.logPoint(tmpPerspective.from));
+        console.log("id:" + tmpPerspective.id + " to" + this.logPoint(tmpPerspective.to));
 
         this.perspectives.push(tmpPerspective);
     }
@@ -201,61 +213,78 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
     this.illuminationNode.ambient = this.parseRGBA(illumination.getElementsByTagName('ambient')[0]);
     this.illuminationNode.background = this.parseRGBA(illumination.getElementsByTagName('background')[0]);
 
-
-    console.log("ambient(" + this.illuminationNode.ambient.r + "," + this.illuminationNode.ambient.g + "," + this.illuminationNode.ambient.b + "," + this.illuminationNode.ambient.a + ")");
-    console.log("background(" + this.illuminationNode.background.r + "," + this.illuminationNode.background.g + "," + this.illuminationNode.background.b + "," + this.illuminationNode.background.a + ")");
+    console.log("ambient" + this.logRGBA(this.illuminationNode.ambient));
+    console.log("background" + this.logRGBA(this.illuminationNode.background));
 
 };
+
+MySceneGraph.prototype.parseOmni = function(omniElement) {
+    if (omniElement == null) {
+		return "Omni Element is missing.";
+	}
+
+    var id, enabled, location, ambient, diffuse, specular;
+
+    id = this.reader.getInteger(omniElement, 'id');
+
+    if (this.reader.getInteger(omniElement, 'enabled') == 1){
+        enabled = true;
+    }
+    else enabled = false;
+
+    location = this.parsePoint(omniElement.getElementsByTagName('location')[0]);
+    ambient = this.parseRGBA(omniElement.getElementsByTagName('ambient')[0]);
+    diffuse = this.parseRGBA(omniElement.getElementsByTagName('diffuse')[0]);
+    specular = this.parseRGBA(omniElement.getElementsByTagName('specular')[0]);
+
+    console.log("OMNI - id:" + id + " enabled:" + enabled + " location" + this.logPoint(location) + " ambient" + this.logRGBA(ambient) + " diffuse" + this.logRGBA(diffuse) + " specular" + this.logRGBA(specular));
+
+    return new Omni(id, enabled, location, ambient, diffuse, specular);
+}
+
+MySceneGraph.prototype.parseSpot = function(spotElement) {
+    if (spotElement == null) {
+		return "Spot Element is missing.";
+	}
+
+    var id, enabled, angle, exponent, target, location, ambient, diffuse, specular;
+
+    id = this.reader.getInteger(spotElement, 'id');
+
+    if (this.reader.getInteger(spotElement, 'enabled') == 1){
+        enabled = true;
+    }
+    else enabled = false;
+
+    angle = this.reader.getFloat(spotElement, 'angle');
+    exponent = this.reader.getFloat(spotElement, 'exponent');
+
+    target = this.parsePoint(spotElement.getElementsByTagName('target')[0]);
+    location = this.parsePoint(spotElement.getElementsByTagName('location')[0]);
+    ambient = this.parseRGBA(spotElement.getElementsByTagName('ambient')[0]);
+    diffuse = this.parseRGBA(spotElement.getElementsByTagName('diffuse')[0]);
+    specular = this.parseRGBA(spotElement.getElementsByTagName('specular')[0]);
+
+    console.log("SPOT - id:" + id + " enabled:" + enabled + " angle:" + angle + " exponent:" + exponent + " target" + this.logPoint(target) + " location" + this.logPoint(location) + " ambient" + this.logRGBA(ambient) + " diffuse" + this.logRGBA(diffuse) + " specular" + this.logRGBA(specular));
+
+    return new Spot(id, enabled, angle, exponent, target, location, ambient, diffuse, specular);
+}
 
 MySceneGraph.prototype.parseLights= function(rootElement) {
 
 	var elements =  rootElement.getElementsByTagName('lights');
 	if (elements == null) {
-		return "lights element is missing.";
+		return "Lights element is missing.";
 	}
 
 	// various examples of different types of access
 
 	var lights = elements[0];
 
-    var omni = lights.rootElement.getElementsByTagName('omni');
-/*
-	this.perspectives=[];
+    //TODO: make it possible to parse more than one omni and/or spot element
+    this.omnis.push(this.parseOmni(lights.getElementsByTagName('omni')[0]));
+    this.spots.push(this.parseSpot(lights.getElementsByTagName('spot')[0]));
 
-    var from = new Point();
-    var to = new Point();
-    var perspective = new Perspective();
-
-    // iterate over every element
-	var nnodes=views.children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=views.children[i];
-
-		// process each element and store its information
-		perspective.id = e.attributes.getNamedItem("id").value;
-        perspective.near = e.attributes.getNamedItem("near").value;
-        perspective.far = e.attributes.getNamedItem("far").value;
-        perspective.angle = e.attributes.getNamedItem("angle").value;
-
-        var p = e.children[0];
-        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
-        from.x = p.attributes.getNamedItem("x").value;
-        from.y = p.attributes.getNamedItem("y").value;
-        from.z = p.attributes.getNamedItem("z").value;
-        perspective.from = from;
-
-        p = e.children[1];
-        //console.log(p.attributes.getNamedItem("x").value + " aqui boi - i=" + i + " j=" + j);
-        to.x = p.attributes.getNamedItem("x").value;
-        to.y = p.attributes.getNamedItem("y").value;
-        to.z = p.attributes.getNamedItem("z").value;
-        perspective.to = to;
-
-        this.perspectives.push(perspective);
-		console.log("Read perspective item: {id="+ perspective.id + " near=" + perspective.near + " far=" + perspective.far + " angle=" + perspective.angle + "from=(" + perspective.from.x  + "," + perspective.from.y + "," + perspective.from.z + ")" + "to=(" + perspective.to.x  + "," + perspective.to.y + "," + perspective.to.z + ")" + "}" );
-	};
-*/
 };
 	
 /*
@@ -263,6 +292,6 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
  */
  
 MySceneGraph.prototype.onXMLError=function (message) {
-	console.error("XML Loading Error: "+message);	
+	console.error("XML Loading Error: "+ message);
 	this.loadedOk=false;
 };

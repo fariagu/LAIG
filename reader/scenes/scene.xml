@@ -52,7 +52,7 @@
     </views>
 
 
-    <illumination doublesided="0" local="1" >
+    <illumination doublesided="0" local="1"     >
 
         <ambient r="0.1" g="0.1" b="0.1" a="0.1" />
         <background r="0.1" g="0.1" b="0.3" a="1" />
@@ -64,14 +64,14 @@
 
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <omni id="omni1" enabled="1" >
+        <omni id="1" enabled="1" >
             <location x="5" y="5" z="5" w="5" />
             <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </omni>
 
-        <spot id="spot1" enabled="1" angle="0.5" exponent="0.3">
+        <spot id="2" enabled="1" angle="0.5" exponent="0.3">
             <!-- atencao, "target" e' diferente de "direction" -->
             <target x="0" y="0" z="0" />
             <location x="20" y="20" z="20" />

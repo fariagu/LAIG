@@ -17,8 +17,9 @@ function MySceneGraph(filename, scene) {
 	 
 	this.reader.open('scenes/'+filename, this);  
 
-    //Initializing arrays
+    //Initializing arrays/variables
     this.perspectives = [];
+    this.illuminationNode = new Illumination();
 }
 
 /*
@@ -169,6 +170,8 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 
         console.log("id:" + tmpPerspective.id + " from(" + tmpPerspective.from.x + "," + tmpPerspective.from.y + "," + tmpPerspective.from.z + ")");
         console.log("id:" + tmpPerspective.id + " to(" + tmpPerspective.to.x + "," + tmpPerspective.to.y + "," + tmpPerspective.to.z + ")");
+
+        this.perspectives.push(tmpPerspective);
     }
 };
 
@@ -184,31 +187,23 @@ MySceneGraph.prototype.parseIllumination= function(rootElement) {
 	var illumination = elements[0];
 
     if (this.reader.getInteger(illumination, 'doublesided') == 1){
-        this.doublesided = true;
+        this.illuminationNode.doublesided = true;
     }
-    else this.doublesided = false;
+    else this.illuminationNode.doublesided = false;
 
     if (this.reader.getInteger(illumination, 'local') == 1){
-        this.local = true;
+        this.illuminationNode.local = true;
     }
-    else this.local = false;
+    else this.illuminationNode.local = false;
 
-	var ambient = new RGBA();
-    var background = new RGBA();
+    console.log("Illumination read from file: {doublesided=" + this.illuminationNode.doublesided + ", local=" + this.illuminationNode.local + "}");
 
-    var e=illumination.children[0];
-    ambient.r = e.attributes.getNamedItem("r").value;
-    ambient.g = e.attributes.getNamedItem("g").value;
-    ambient.b = e.attributes.getNamedItem("b").value;
-    ambient.a = e.attributes.getNamedItem("a").value;
+    this.illuminationNode.ambient = this.parseRGBA(illumination.getElementsByTagName('ambient')[0]);
+    this.illuminationNode.background = this.parseRGBA(illumination.getElementsByTagName('background')[0]);
 
-    e=illumination.children[1];
-    background.r = e.attributes.getNamedItem("r").value;
-    background.g = e.attributes.getNamedItem("g").value;
-    background.b = e.attributes.getNamedItem("b").value;
-    background.a = e.attributes.getNamedItem("a").value;
 
-    console.log("Illumination read from file: {doublesided=" + this.doublesided + ", local=" + this.local + "ambient=(" + ambient.r + "," + ambient.g + "," + ambient.b + "," + ambient.a + "), bg=(" + background.r + "," + background.g + "," + background.b + "," + background.a + ")" + "}");
+    console.log("ambient(" + this.illuminationNode.ambient.r + "," + this.illuminationNode.ambient.g + "," + this.illuminationNode.ambient.b + "," + this.illuminationNode.ambient.a + ")");
+    console.log("background(" + this.illuminationNode.background.r + "," + this.illuminationNode.background.g + "," + this.illuminationNode.background.b + "," + this.illuminationNode.background.a + ")");
 
 };
 

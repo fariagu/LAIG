@@ -26,6 +26,7 @@ function MySceneGraph(filename, scene) {
     this.textures = [];
     this.materials = [];
     this.transformations = [];
+    this.primitives = [];
 }
 
 /*
@@ -51,6 +52,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseTextures(rootElement);
     this.parseMaterials(rootElement);
     this.parseTransformations(rootElement);
+    this.parsePrimitives(rootElement);
 
 	this.loadedOk=true;
 	
@@ -423,6 +425,172 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
         this.transformations.push(tmpTransformation);
     }
 };
+
+MySceneGraph.prototype.parseRectangle = function(rectangleElement) {
+    if (rectangleElement == null) {
+		return "Rectangle Element is missing.";
+	}
+
+    var x1, y1,  x2, y2;
+
+    x1 = this.reader.getFloat(rectangleElement, 'x1');
+    y1 = this.reader.getFloat(rectangleElement, 'y1');
+    x2 = this.reader.getFloat(rectangleElement, 'x2');
+    y2 = this.reader.getFloat(rectangleElement, 'y2');
+
+    return new Rectangle(0, x1, y1, x2, y2);
+}
+
+MySceneGraph.prototype.logRectangle = function(rectangleObject) {
+   return "id:" + rectangleObject.id + " - Rectangle - x1:" + rectangleObject.x1 + ", y1:" + rectangleObject.y1 + ", x2:" + rectangleObject.x2 + ", y2:" + rectangleObject.y2;
+}
+
+MySceneGraph.prototype.parseTriangle = function(triangleElement) {
+    if (triangleElement == null) {
+		return "Triangle Element is missing.";
+	}
+
+    var x1, y1, z1, x2, y2, z2, x3, y3, z3;
+
+    x1 = this.reader.getFloat(triangleElement, 'x1');
+    y1 = this.reader.getFloat(triangleElement, 'y1');
+    z1 = this.reader.getFloat(triangleElement, 'z1');
+    x2 = this.reader.getFloat(triangleElement, 'x2');
+    y2 = this.reader.getFloat(triangleElement, 'y2');
+    z2 = this.reader.getFloat(triangleElement, 'z2');
+    x3 = this.reader.getFloat(triangleElement, 'x3');
+    y3 = this.reader.getFloat(triangleElement, 'y3');
+    z3 = this.reader.getFloat(triangleElement, 'z3');
+
+    return new Triangle(0, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+}
+
+MySceneGraph.prototype.logTriangle = function(triangleObject) {
+   return "id:" + triangleObject.id + " - Triangle - x1:" + triangleObject.x1 + ", y1:" + triangleObject.y1 + ", z1:" + triangleObject.z1 + ", x2:" + triangleObject.x2 + ", y2:" + triangleObject.y2 + ", z2:" + triangleObject.z2 + ", x3:" + triangleObject.x3 + ", y3:" + triangleObject.y3 + ", z3:" + triangleObject.z3;
+}
+
+MySceneGraph.prototype.parseCylinder = function(cylinderElement) {
+    if (cylinderElement == null) {
+		return "Cylinder Element is missing.";
+	}
+
+    var base, top, height, slices, stacks;
+
+    base = this.reader.getFloat(cylinderElement, 'base');
+    top = this.reader.getFloat(cylinderElement, 'top');
+    height = this.reader.getFloat(cylinderElement, 'height');
+    slices = this.reader.getFloat(cylinderElement, 'slices');
+    stacks = this.reader.getFloat(cylinderElement, 'stacks');
+
+    return new Cylinder(0, base, top, height, slices, stacks);
+}
+
+MySceneGraph.prototype.logCylinder = function(cylinderObject) {
+   return "id:" + cylinderObject.id + " - Cylinder - base:" + cylinderObject.base + ", top:" + cylinderObject.top + ", height:" + cylinderObject.height + ", slices:" + cylinderObject.slices + ", stacks:" + cylinderObject.stacks;
+}
+
+MySceneGraph.prototype.parseSphere = function(sphereElement) {
+    if (sphereElement == null) {
+		return "Sphere Element is missing.";
+	}
+
+    var radius, slices, stacks;
+
+    radius = this.reader.getFloat(sphereElement, 'radius');
+    slices = this.reader.getFloat(sphereElement, 'slices');
+    stacks = this.reader.getFloat(sphereElement, 'stacks');
+
+    return new Sphere(0, radius, slices, stacks);
+}
+
+MySceneGraph.prototype.logSphere = function(sphereObject) {
+   return "id:" + sphereObject.id + " - Sphere - radius:" + sphereObject.radius + ", slices:" + sphereObject.slices + ", stacks:" + sphereObject.stacks;
+}
+
+MySceneGraph.prototype.parseTorus = function(torusElement) {
+    if (torusElement == null) {
+		return "Torus Element is missing.";
+	}
+
+    var inner, outer, slices, loops;
+
+    inner = this.reader.getString(torusElement, 'inner');
+    outer = this.reader.getString(torusElement, 'outer');
+    slices = this.reader.getString(torusElement, 'slices');
+    loops = this.reader.getString(torusElement, 'loops');
+
+    return new Torus(0, inner, outer, slices, loops);
+}
+
+MySceneGraph.prototype.logTorus = function(torusObject) {
+   return "id:" + torusObject.id + " - Torus - inner:" + torusObject.inner + ", outer:" + torusObject.outer + ", slices:" + torusObject.slices + ", loops:" + torusObject.looops;
+}
+
+MySceneGraph.prototype.parsePrimitives= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('primitives');
+	if (elements == null) {
+		return "primitives element is missing.";
+	}
+
+    console.log("--> Parsing Primitives");
+
+	// various examples of different types of access
+	var primitivesNode = elements[0];
+
+    var primitive = primitivesNode.getElementsByTagName('primitive');
+    var nodeName;
+    var tmpID;
+    var tmpPrimitive;
+
+    var nnodes = primitive.length;
+    for (var i = 0; i < nnodes; i++){
+        tmpID = this.reader.getInteger(primitive[i], 'id');
+
+        nodeName = primitive[i].children[0].nodeName;
+        childNode = primitive[i].children[0];
+        console.log("nodeName:" + nodeName);
+
+        switch (nodeName){
+            case 'rectangle':
+                tmpPrimitive = new Rectangle();
+                tmpPrimitive = this.parseRectangle(childNode);
+                tmpPrimitive.id = tmpID;
+                console.log(this.logRectangle(tmpPrimitive));
+                break;
+            case 'triangle':
+                tmpPrimitive = new Triangle();
+                tmpPrimitive = this.parseTriangle(childNode);
+                tmpPrimitive.id = tmpID;
+                console.log(this.logTriangle(tmpPrimitive));
+                break;
+            case 'cylinder':
+                tmpPrimitive = new Cylinder();
+                tmpPrimitive = this.parseCylinder(childNode);
+                tmpPrimitive.id = tmpID;
+                console.log(this.logCylinder(tmpPrimitive));
+                break;
+            case 'sphere':
+                tmpPrimitive = new Sphere();
+                tmpPrimitive = this.parseSphere(childNode);
+                tmpPrimitive.id = tmpID;
+                console.log(this.logSphere(tmpPrimitive));
+                break;
+            case 'torus':
+                tmpPrimitive = new Torus();
+                tmpPrimitive = this.parseTorus(childNode);
+                tmpPrimitive.id = tmpID;
+                console.log(this.logTorus(tmpPrimitive));
+                break;
+            default:
+                break;
+        }
+
+        this.transformations.push(tmpPrimitive);
+    }
+};
+
+
 	
 /*
  * Callback to be executed on any read error

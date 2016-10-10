@@ -95,3 +95,65 @@ class Rotate {
         this.angle = angle;
     }
 }
+
+class Primitive {
+    constructor(id){
+        this.id = id;
+    }
+}
+
+class Rectangle extends Primitive {
+    constructor(id, x1, y1, x2, y2){
+        super(id);
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+    }
+}
+
+class Triangle extends Primitive {
+    constructor(id, x1, y1, z1, x2, y2, z2, x3, y3, z3){
+        super(id);
+        this.x1 = x1;
+        this.y1 = y1;
+        this.z1 = z1;
+        this.x2 = x2;
+        this.y2 = y2;
+        this.z2 = z2;
+        this.x3 = x3;
+        this.y3 = y3;
+        this.z3 = z3;
+    }
+}
+
+class Cylinder extends Primitive {
+    constructor(id, base, top, height, slices, stacks){
+        super(id);
+        this.base = base;
+        this.top = top;
+        this.height = height;
+        this.slices = slices;
+        this.stacks = stacks;
+    }
+}
+
+class Sphere extends Primitive {
+    constructor(id, radius, slices, stacks){
+        super(id);
+        this.radius = radius;
+        this.slices = slices;
+        this.stacks = stacks;
+    }
+}
+
+class Torus extends Primitive {
+    constructor(id, inner, outer, slices, loops){
+        super(id);
+        this.inner = inner;
+        this.outer = outer;
+        this.slices = slices;
+        this.loops = loops;
+    }
+}
+

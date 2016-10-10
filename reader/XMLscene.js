@@ -67,6 +67,9 @@ XMLscene.prototype.display = function () {
 	// Draw axis
 	this.axis.display();
 
+    //TODO: completar
+    //this.processGraph(rootNode);
+
 	this.setDefaultAppearance();
 	
 	// ---- END Background, camera and axis setup
@@ -79,9 +82,38 @@ XMLscene.prototype.display = function () {
 		this.lights[0].update();
 
         //--------------
-        this.pushMatrix();
+        //this.pushMatrix();
 
-        this.popMatrix();
+        //this.popMatrix();
 	};	
 };
+
+/*
+XMLScene.prototype.processGraph = function(nodeName) {
+    var material = null;
+
+    if (nodeName != null){
+        var node = this.graph[nodeName];
+
+        if (node.material != null){
+            material = node.material;
+
+            if (material != null){
+                this.applyMaterial(material);
+                this.nullMatrix(node.matrix);
+
+                for (var i=0; i < node.children.length; i++){
+                    this.pushMatrix();
+
+                    this.applyMaterial(material);
+                    this.processGraph(node.children[i]);
+
+                    this.popMatrix();
+                }
+            }
+        }
+    }
+}
+
+*/
 

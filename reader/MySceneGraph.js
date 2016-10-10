@@ -27,6 +27,7 @@ function MySceneGraph(filename, scene) {
     this.materials = [];
     this.transformations = [];
     this.primitives = [];
+    this.components = [];
 }
 
 /*
@@ -53,6 +54,7 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseMaterials(rootElement);
     this.parseTransformations(rootElement);
     this.parsePrimitives(rootElement);
+    this.parseComponents(rootElement);
 
 	this.loadedOk=true;
 	
@@ -523,7 +525,7 @@ MySceneGraph.prototype.parseTorus = function(torusElement) {
 }
 
 MySceneGraph.prototype.logTorus = function(torusObject) {
-   return "id:" + torusObject.id + " - Torus - inner:" + torusObject.inner + ", outer:" + torusObject.outer + ", slices:" + torusObject.slices + ", loops:" + torusObject.looops;
+   return "id:" + torusObject.id + " - Torus - inner:" + torusObject.inner + ", outer:" + torusObject.outer + ", slices:" + torusObject.slices + ", loops:" + torusObject.loops;
 }
 
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
@@ -586,10 +588,66 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
                 break;
         }
 
-        this.transformations.push(tmpPrimitive);
+        this.primitives.push(tmpPrimitive);
     }
 };
 
+
+MySceneGraph.prototype.parseComponents= function(rootElement) {
+
+	var elements =  rootElement.getElementsByTagName('components');
+	if (elements == null) {
+		return "components element is missing.";
+	}
+
+    console.log("--> Parsing Components");
+
+    var transformationref, materialsElement, materialref, textureElement;
+
+    var tmpMaterials = [];
+    var tmpChildren = [];
+
+	// various examples of different types of access
+	var componentsNode = elements[0];
+
+    var component = componentsNode.getElementsByTagName('component');
+    var tmpComponent = new Component();
+
+    var nnodes = component.length;
+    for (var i = 0; i < nnodes; i++){
+        tmpComponent.id = this.reader.getInteger(component[i], 'id');
+        console.log("COMPONENT id:" + tmpComponent.id);
+
+        //---------------------------------------------------------------------------------------------------------
+
+        //TODO: add support to inline textures in components
+        transformationref = component[i].getElementsByTagName('transformationref')[0];
+        tmpComponent.transformationID = this.reader.getInteger(transformationref, 'id');
+        console.log("transformation:" + tmpComponent.transformationID);
+
+        //----------------------------------------------------------------------------------------------------------
+
+        materialsElement = component[i].getElementsByTagName('materials')[0];//materialsElement.nodeName = materials
+
+        var jnodes = materialsElement.children.length;
+        for (var j = 0; j < jnodes; j++){
+            materialref = materialsElement.getElementsByTagName('material')[j];//materialref.nodeName = material
+            //console.log("material id:" + this.reader.getString(materialref, 'id'));
+            tmpMaterials.push(this.reader.getString(materialref, 'id'));
+
+            console.log("material id:" + tmpMaterials[j]);
+        }
+
+        tmpComponent.materials = tmpMaterials;
+        tmpMaterials = [];
+
+        //---------------------------------------------------------------------------------------------------------
+
+        textureElement = component[i].getElementsByTagName('texture')[0];
+        tmpComponent.texture = this.reader.getInteger(textureElement, 'id');
+        console.log("texture id:" + tmpComponent.texture);
+    }
+};
 
 	
 /*

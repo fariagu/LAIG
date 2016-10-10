@@ -264,7 +264,7 @@
 
                 <!-- deve conter uma referencia a uma das "transformation" -->
                 <!-- declaradas anteriormente -->
-                <transformationref id="transf1" />
+                <transformationref id="1" />
 
                 <!-- ou, ALTERNATIVAMENTE, transformacoes explicitas, -->
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
@@ -285,7 +285,7 @@
             <!-- o material muda para o proximo material da lista; do -->
             <!-- ultimo material da lista volta ao primeiro -->
             <materials>
-<!--                 <material id="inherit" /> -->
+<!--            <material id="inherit" /> -->
                 <material id="1" />
                 <material id="2" />
 
@@ -299,7 +299,7 @@
 
             <!-- <texture id="inherit" /> -->
             <texture id="1" />
-            <texture id="2" />
+            <!-- <texture id="2" /> -->
           
 
             <!-- bloco "children" obrigatorio num "component" -->
@@ -323,8 +323,10 @@
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
-
+                <transformationref id="3"/>
+                <!--
                 <translate x="1" y="1" z="1" />
+                -->
             </transformation>
 
             <materials>
@@ -348,8 +350,8 @@
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
-
-                <translate x="-1" y="-1" z="0" />
+                <transformationref id="4" />
+                <!-- <translate x="-1" y="-1" z="0" /> -->
             </transformation>
 
             <materials>
@@ -373,18 +375,19 @@
 
             <!-- bloco "transformation" obrigatorio -->
             <transformation>
-
-                <translate x="-1" y="-1" z="0" />
+                <transformationref id="6" />
+                <!-- <translate x="-1" y="-1" z="0" /> -->
             </transformation>
 
             <materials>
                 <material id="4" />
                 <material id="inherit" />
                 <material id="default" />
+                <material id="1" />
             </materials>
 
 
-            <texture id="tWood" />
+            <texture id="2" />
 
 
             <children>

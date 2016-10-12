@@ -21,6 +21,17 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+
+    ////////////  Teste   ///////////////
+    var p2 = new Point(1,0,0);
+     var p1= new Point(0,0,0);
+    var p3 = new Point(0,1,0);
+
+    var p4 = new Point(0,1,1);
+
+    this.Triangle=new Triangle(this, p1, p2, p3);
+    this.Rectangle=new Rectangle(this, p1, p4);
+    //this.cylinder=new Cylinder(this);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -81,11 +92,16 @@ XMLscene.prototype.display = function () {
 	{
 		this.lights[0].update();
 
-        //--------------
+                //--------------
         //this.pushMatrix();
 
         //this.popMatrix();
 	};	
+
+     ///////////    Teste    ///////////
+        this.Triangle.display();
+        this.Rectangle.display();
+        //this.cylinder.display();
 };
 
 /*

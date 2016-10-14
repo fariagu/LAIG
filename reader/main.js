@@ -19,6 +19,8 @@ serialInclude([
     'Triangle.js',
     'Rectangle.js',
     'Cylinder.js',
+    'Torus.js',
+    'Sphere.js',
 
 main=function()
 {

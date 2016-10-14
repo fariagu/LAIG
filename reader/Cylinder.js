@@ -1,5 +1,5 @@
 var degToRad = Math.PI / 180.0;
-function Cylinder(scene, slices, stacks) 
+function Cylinder(scene, slices, stacks, xi, yi, xf, yf) 
 {
  	CGFobject.call(this,scene);
 	this.slices=slices;
@@ -9,6 +9,11 @@ function Cylinder(scene, slices, stacks)
 	this.normals = [];
 	this.texCoords = [];
 	this.initBuffers();
+
+	this.xi= xi;
+	this.xf=xf;
+	this.yi=yi;
+	this.yf=yf;
 };
 
  Cylinder.prototype = Object.create(CGFobject.prototype);

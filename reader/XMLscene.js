@@ -24,17 +24,17 @@ XMLscene.prototype.init = function (application) {
 
     ////////////  Teste   ///////////////
     var p2 = new Point(1,0,0);
-    var p1= new Point(0,0,0);
+    var p1= new Point(2,0,0);
     var p3 = new Point(0,1,0);
 
-    var p4 = new Point(0,0,1);
+    var p4 = new Point(1,1,0);
     var p5 = new Point(1,2,0)
 
-    this.Triangle=new Triangle(this, p1, p2, p3);
+    this.Triangle=new Triangle(this, p2, p1, p4);
     this.Rectangle=new Rectangle(this, p3, p5);
-    this.Cylinder=new Cylinder(this, 30, 3);
+    this.Cylinder=new Cylinder(this, 2, 1, 1, 30, 10);
     this.Torus = new Torus(this, 2, 4, 50, 20);
-    this.Sphere = new Sphere(this, 0.5, 10, 10);
+    this.Sphere = new Sphere(this, 1, 50, 50);
 };
 
 XMLscene.prototype.initLights = function () {

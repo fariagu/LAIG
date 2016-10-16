@@ -602,7 +602,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
     console.log("--> Parsing Components");
 
-    var transformationref, materialsElement, materialref, textureElement;
+    var transformationref, materialsElement, materialref, textureElement, childrenElement;
 
     var tmpMaterials = [];
     var tmpChildren = [];
@@ -646,6 +646,37 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         textureElement = component[i].getElementsByTagName('texture')[0];
         tmpComponent.texture = this.reader.getInteger(textureElement, 'id');
         console.log("texture id:" + tmpComponent.texture);
+
+        //---------------------------------------------------------------------------------------------------------
+
+        childrenElement = component[i].getElementsByTagName('children')[0];
+        tmpComponent.primitive = null;
+
+        var refComponents = [];
+        var tmpComponentref;
+
+
+        jnodes = childrenElement.children.length;
+        for (var j = 0; j < jnodes; j++){
+            var childrenType = childrenElement.children[j].nodeName;
+
+            switch(childrenType) {
+                case 'componentref':
+                    tmpComponentref = this.reader.getInteger(childrenElement.children[j], 'id');
+                    console.log('componentref id:' + tmpComponentref);
+                    refComponents.push(tmpComponentref);
+                    break;
+                case 'primitiveref':
+                    tmpComponent.primitive = this.reader.getInteger(childrenElement.children[j], 'id');
+                    console.log('primitiveref id:' + tmpComponent.primitive);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        tmpComponent.children = tmpComponentref;
+
     }
 };
 

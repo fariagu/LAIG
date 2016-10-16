@@ -142,7 +142,4 @@ XMLScene.prototype.processGraph = function(nodeName) {
             }
         }
     }
-}
-
-*/
-
+}*/

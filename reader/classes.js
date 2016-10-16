@@ -159,12 +159,13 @@ class Torus extends Primitive {
 
 
 class Component {
-    constructor(id, transformationID, materials, texture, children){
+    constructor(id, transformationID, materials, texture, children, primitives){
         this.id = id;
         this.transformationID = transformationID;
         this.materials = materials;
         this.texture = texture;
         this.children = children;
+        this.primitive = primitive;
     }
 }
 

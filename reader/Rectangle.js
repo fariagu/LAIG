@@ -1,4 +1,4 @@
-function Rectangle(scene, point1, point2, minS = 0, maxS = 1, minT = 0, maxT = 1) {
+function RectangleD(scene, point1, point2, minS = 0, maxS = 1, minT = 0, maxT = 1) {
     CGFobject.call(this, scene);
 
     this.minS = minS;
@@ -11,10 +11,10 @@ function Rectangle(scene, point1, point2, minS = 0, maxS = 1, minT = 0, maxT = 1
     this.initBuffers();
 };
 
-Rectangle.prototype = Object.create(CGFobject.prototype);
-Rectangle.prototype.constructor = Rectangle;
+RectangleD.prototype = Object.create(CGFobject.prototype);
+RectangleD.prototype.constructor = RectangleD;
 
-Rectangle.prototype.initBuffers = function() {
+RectangleD.prototype.initBuffers = function() {
     this.vertices = [
         this.point1.x, this.point1.y, 0,
         this.point2.x, this.point1.y, 0,

@@ -30,11 +30,11 @@ XMLscene.prototype.init = function (application) {
     var p4 = new Point(1,1,0);
     var p5 = new Point(1,2,0)
 
-    this.Triangle=new Triangle(this, p2, p1, p4);
-    this.Rectangle=new Rectangle(this, p3, p5);
-    this.Cylinder=new Cylinder(this, 2, 1, 1, 30, 10);
-    this.Torus = new Torus(this, 2, 4, 50, 20);
-    this.Sphere = new Sphere(this, 1, 50, 50);
+    this.triangleD=new TriangleD(this, p2, p1, p4);
+    this.rectangleD=new RectangleD(this, p3, p5);
+    this.cylinderD=new CylinderD(this, 2, 1, 1, 30, 10);
+    this.torusD = new TorusD(this, 2, 4, 50, 20);
+    this.sphereD = new SphereD(this, 1, 50, 50);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -106,14 +106,14 @@ XMLscene.prototype.display = function () {
 	};	
 
      ///////////    Teste    ///////////
-        this.Triangle.display();
+        this.triangleD.display();
         //console.log(">>triangle loaded");
-        this.Rectangle.display();
+        this.rectangleD.display();
         //console.log(">>rect loaded");
-        this.Cylinder.display();
+        this.cylinderD.display();
         //console.log(">>cyl loaded");
-        this.Torus.display();
-        this.Sphere.display();
+        this.torusD.display();
+        this.sphereD.display();
 
 };
 

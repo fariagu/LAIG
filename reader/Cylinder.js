@@ -1,4 +1,4 @@
-function Cylinder(scene, base, top, height, slices, stacks) {
+function CylinderD(scene, base, top, height, slices, stacks) {
     CGFobject.call(this, scene);
 
     this.base = base;
@@ -10,10 +10,10 @@ function Cylinder(scene, base, top, height, slices, stacks) {
     this.initBuffers();
     }
 
-Cylinder.prototype = Object.create(CGFobject.prototype);
-Cylinder.prototype.constructor = Cylinder;
+CylinderD.prototype = Object.create(CGFobject.prototype);
+CylinderD.prototype.constructor = CylinderD;
 
-Cylinder.prototype.initBuffers = function() {
+CylinderD.prototype.initBuffers = function() {
     this.alpha = 2 * Math.PI / this.slices;
 
     this.vertices = [];

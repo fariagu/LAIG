@@ -101,7 +101,7 @@ class Primitive {
         this.id = id;
     }
 }
-/*
+
 class Rectangle extends Primitive {
     constructor(id, x1, y1, x2, y2){
         super(id);
@@ -156,7 +156,7 @@ class Torus extends Primitive {
         this.loops = loops;
     }
 }
-*/
+
 
 class Component {
     constructor(id, transformationID, materials, texture, children){

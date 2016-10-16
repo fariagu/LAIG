@@ -1,4 +1,4 @@
-function Torus(scene, inner, outer, slices, loops) {
+function TorusD(scene, inner, outer, slices, loops) {
     CGFobject.call(this, scene);
 
     this.in = inner;
@@ -9,10 +9,10 @@ function Torus(scene, inner, outer, slices, loops) {
     
 };
 
-Torus.prototype = Object.create(CGFobject.prototype);
-Torus.prototype.constructor = Torus;
+TorusD.prototype = Object.create(CGFobject.prototype);
+TorusD.prototype.constructor = TorusD;
 
-Torus.prototype.initBuffers = function() {
+TorusD.prototype.initBuffers = function() {
 
     this.vertices = [];
     this.indices = [];

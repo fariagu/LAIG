@@ -1,4 +1,4 @@
-function Sphere(scene, radius, slices, stacks) {
+function SphereD(scene, radius, slices, stacks) {
     CGFobject.call(this, scene);
 
     this.radius = radius;
@@ -8,10 +8,10 @@ function Sphere(scene, radius, slices, stacks) {
     this.initBuffers();
 };
 
-Sphere.prototype = Object.create(CGFobject.prototype);
-Sphere.prototype.constructor = Sphere;
+SphereD.prototype = Object.create(CGFobject.prototype);
+SphereD.prototype.constructor = SphereD;
 
-Sphere.prototype.initBuffers = function() {
+SphereD.prototype.initBuffers = function() {
 
     this.vertices = [];
     this.indices = [];

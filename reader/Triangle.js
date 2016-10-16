@@ -1,4 +1,4 @@
- function Triangle(scene, point1, point2, point3) {
+ function TriangleD(scene, point1, point2, point3) {
  	CGFobject.call(this,scene);
 
   this.point1 = point1;
@@ -8,10 +8,10 @@
  	this.initBuffers();
  };
 
- Triangle.prototype = Object.create(CGFobject.prototype);
- Triangle.prototype.constructor = Triangle;
+ TriangleD.prototype = Object.create(CGFobject.prototype);
+ TriangleD.prototype.constructor = TriangleD;
 
- Triangle.prototype.initBuffers = function() {
+ TriangleD.prototype.initBuffers = function() {
  	this.vertices = [
     this.point1.x, this.point1.y, this.point1.z,
     this.point2.x, this.point2.y, this.point2.z,

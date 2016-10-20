@@ -32,22 +32,53 @@
 
 
     <lights>
-  
+      
         <omni id="omni1" enabled="1" >
-            <location x="10" y="30" z="10" w="1" />
+            <location x="15" y="50" z="5" w="1" />
             <ambient r="1" g="1" b="1" a="1" />
             <diffuse r="1" g="1" b="1" a="1" />
             <specular r="1" g="1" b="1" a="1" />
         </omni>
 
-        <spot id="spot1" enabled="1" angle="0" exponent="1">
-            <target x="10" y="5" z="5" />
-            <location x="20" y="20" z="20" w="1.0" />
+        <omni id="lightPost1" enabled="1" >
+            <location x="10" y="3" z="17" w="1" />
+            <ambient r="1" g="1" b="1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
+
+        <omni id="lightPost2" enabled="1" >
+            <location x="20" y="3" z="17" w="1" />
+            <ambient r="1" g="1" b="1" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
+
+
+
+        <spot id="spot1" enabled="1" angle="1" exponent="1">
+            <target x="15" y="10" z="8" />
+            <location x="14" y="0.3" z="10" w="1.0" />
             <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </spot>
 
+        <spot id="spot2" enabled="1" angle="1" exponent="1">
+            <target x="15" y="10" z="8" />
+            <location x="16" y="0.3" z="10" w="1.0" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </spot>
+
+        <spot id="busLight" enabled="1" angle="1" exponent="1">
+            <target x="18" y="0" z="16.3" />
+            <location x="15" y="0.5" z="16.3" w="1.0" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.5" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </spot>
 
     </lights>
 
@@ -63,6 +94,17 @@
         <texture id="trunk" file="resources\\images\\trunk.jpg" length_s="1.0" length_t="1.0" />
         <texture id="treetop" file="resources\\images\\treetop.jpg" length_s="1.0" length_t="1.0" />
         <texture id="logo" file="resources\\images\\logo.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="glass" file="resources\\images\\glass.jpg" length_s="1.0" length_t="1.0" />        
+        <texture id="blackTex" file="resources\\images\\blackTex.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="busr" file="resources\\images\\busr.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="busl" file="resources\\images\\busl.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="busf" file="resources\\images\\busf.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="busb" file="resources\\images\\busb.jpg" length_s="1.0" length_t="1.0" />
+        <texture id="bust" file="resources\\images\\bust.jpg" length_s="1.0" length_t="1.0" />
+
+
+
+
 
     </textures>
         
@@ -146,7 +188,10 @@
                 <componentref id="build" /> 
                 <componentref id="tree1" />                        
                 <componentref id="tree2" />
-                <componentref id="logo" />
+                <componentref id="spots" />
+                <componentref id="lPosts" />
+                <componentref id="bus" />
+                                
             </children>
 
         </component>
@@ -302,7 +347,7 @@
             <transformation>
                 <rotate axis="y" angle="-90" />
                 <rotate axis="x" angle="-90" />
-                <scale x="30" y="30" z="30" />
+                <scale x="20" y="30" z="10" />
             </transformation>
 
             <materials>
@@ -320,7 +365,7 @@
         <component id="road">
 
            <transformation>
-                <translate x="0" y="0.1" z="18" />
+                <translate x="0" y="0.1" z="12" />
                 <rotate axis="y" angle="-90" />
                 <rotate axis="x" angle="-90" />
                 <scale x="5" y="30" z="5" />
@@ -341,7 +386,7 @@
         <component id="build">
 
             <transformation>
-            <translate x="15" y="10" z="10" />
+            <translate x="15" y="10" z="5" />
             <rotate axis="x" angle="90" />
                 
             </transformation>
@@ -421,7 +466,8 @@
           <component id="logo">
 
             <transformation>
-              <translate x="14" y="8" z="12.6" />              
+              <translate x="-1" y="2.3" z="0" />
+              <rotate axis="x" angle="270" />
               <scale x="2" y="2" z="2" />
             </transformation>
 
@@ -441,7 +487,7 @@
         <component id="tree1">
 
             <transformation>
-            <translate x="5" y="0" z="10" />           
+            <translate x="5" y="0" z="5" />           
                 
             </transformation>
 
@@ -501,7 +547,7 @@
         <component id="tree2">
 
             <transformation>
-            <translate x="25" y="0" z="10" />
+            <translate x="25" y="0" z="5" />
            
                 
             </transformation>
@@ -539,6 +585,438 @@
 
         </component>
 
-</components>
+        <component id="spots">
+
+            <transformation>
+            <translate x="14.5" y="-0.4" z="8" />
+            <rotate axis="x" angle="70" />
+            <scale x="0.5" y="0.5" z="0.3" />           
+                
+            </transformation>
+
+            <materials>
+                <material id="m2" />
+            </materials>
+
+            <texture id="blackTex" />
+
+            <children>
+                <componentref id="spot1" />
+                <componentref id="spot2" />
+             </children>
+
+         </component>
+            
+
+       <component id="spot1">
+
+            <transformation>
+              <translate x="-1" y="4" z="0" />                        
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+
+        </component>
+
+        <component id="spot2">
+
+            <transformation>
+              <translate x="3" y="4" z="0" />
+            
+             
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+
+        </component>
+
+        <component id="lPosts">
+
+            <transformation>
+              <translate x="15" y="3" z="17.2" />                
+            </transformation>
+
+            <materials>
+                <material id="m2" />
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="lPost1" />
+                <componentref id="lPost2" />
+             </children>
+
+         </component>
+            
+
+       <component id="lPost1">
+
+            <transformation>
+              <translate x="-5" y="0" z="0" />                        
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="post" />
+                <componentref id="bulb" />
+            </children>
+
+        </component>
+
+        <component id="lPost2">
+
+            <transformation>
+              <translate x="5" y="0" z="0" />          
+             
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="post" />
+                <componentref id="bulb" />
+            </children>
+
+        </component>
+
+        <component id="post">
+
+            <transformation>
+            <rotate axis="x" angle="90" />            
+            <scale x="0.3" y="0.3" z="3" />                                 
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="blackTex" />
+
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+
+        </component>
+
+        <component id="bulb">
+
+            <transformation>
+              <scale x="1" y="1" z="1" />         
+             
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="glass" />
+
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+
+        </component>
+
+
+        <component id="bus">
+
+            <transformation>
+            	<translate x="12" y="3" z="16.8" />
+            </transformation>
+
+            <materials>
+                <material id="m2" />
+            </materials>
+
+            <texture id="roof" />
+
+            <children>
+                <componentref id="body" />
+                <componentref id="wheels" />
+             </children>
+
+        </component>
+
+          
+        <component id="body">
+
+            <transformation>
+            	<scale x="1.5" y="1.3" z="1.3" /> 
+            	<translate x="0" y="-1.1" z="0" />                
+            </transformation>
+
+            <materials>
+                <material id="m2" />
+            </materials>
+
+            <texture id="none" />
+
+            <children>
+                <componentref id="btop" />
+                <componentref id="bbottom" />
+                <componentref id="bfront" />
+                <componentref id="bback" />
+                <componentref id="bsidel" />
+                <componentref id="bsider" />
+             </children>
+
+        </component>
+
+        <component id="btop">
+
+            <transformation>
+              <translate x="-1" y="0" z="0" />
+              <rotate axis="x" angle="-90" /> 
+              <scale x="3" y="1" z="1" />            
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="bust" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="bbottom">
+
+            <transformation>
+			  <translate x="-1" y="-1" z="-1" />
+              <rotate axis="x" angle="90" /> 
+              <scale x="3" y="1" z="1" />             
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="roof" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+
+        <component id="bfront">
+
+            <transformation>
+              <translate x="2" y="-1" z="0" />
+              <rotate axis="y" angle="90" />
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="busf" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        
+        <component id="bback">
+
+            <transformation>
+              <translate x="-1" y="-1" z="-1" />
+              <rotate axis="y" angle="-90" /> 
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="busb" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+
+        <component id="bsider">
+
+            <transformation>
+              <translate x="-1" y="-1" z="0" /> 
+              <scale x="3" y="1" z="1" />
+
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="busr" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+
+        <component id="bsidel">
+
+            <transformation>
+              <translate x="2" y="-1" z="-1" />
+              <rotate axis="y" angle="180" /> 
+              <scale x="3" y="1" z="1" /> 
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="busl" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="wheels">
+
+            <transformation>
+              <translate x="0" y="-2.6" z="0" />
+              <scale x="0.2" y="0.2" z="0.2" /> 
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="blackTex" />
+
+            <children>      
+
+                <componentref id="wheel1" />
+                <componentref id="wheel2" />
+                <componentref id="wheel3" />
+                <componentref id="wheel4" />
+
+             </children>
+
+        </component>
+
+
+        <component id="wheel1">
+
+            <transformation>
+              <translate x="-1" y="0" z="0" />            
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="torus" />
+            </children>
+
+        </component>
+
+        <component id="wheel2">
+
+            <transformation>
+              <translate x="10" y="0" z="0" />            
+             
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="torus" />
+            </children>
+
+        </component>
+
+        <component id="wheel3">
+
+            <transformation>
+              <translate x="10" y="0" z="-6.6" /> 
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="torus" />
+            </children>
+
+        </component>
+
+        <component id="wheel4">
+
+            <transformation>
+              <translate x="-1" y="0" z="-6.6" />
+            </transformation>
+
+            <materials>
+                <material id="m2"/>
+            </materials>
+
+            <texture id="inherit" />
+
+            <children>
+                <primitiveref id="torus" />
+            </children>
+
+        </component>
+
+
+
+      </components>
 
 </dsx>
+
+
+<!--
+*materials 
+*iluminação
+*vistas
+-->

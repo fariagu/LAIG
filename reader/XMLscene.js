@@ -31,11 +31,11 @@ XMLscene.prototype.init = function (application) {
     var p4 = new Point(1,1,0);
     var p5 = new Point(1,2,0)
 
-    this.triangleD=new TriangleD(this, p2, p1, p4);
-    this.rectangleD=new RectangleD(this, p3, p5);
-    this.cylinderD=new CylinderD(this, 2, 1, 1, 30, 10);
-    this.torusD = new TorusD(this, 2, 4, 50, 20);
-    this.sphereD = new SphereD(this, 1, 50, 50);
+    this.triangle=new Triangle(this, p2, p1, p4);
+    this.rectangle=new Rectangle(this, p3, p5);
+    this.cylinder=new Cylinder(this, 2, 1, 1, 30, 10);
+    this.torus = new Torus(this, 2, 4, 50, 20);
+    this.sphere = new Sphere(this, 1, 50, 50);
 */
 };
 
@@ -65,7 +65,16 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	this.gl.clearColor(this.graph.illuminationNode.background.r,
+                       this.graph.illuminationNode.background.g,
+                       this.graph.illuminationNode.background.b,
+                       this.graph.illuminationNode.background.a);
+
+    this.setAmbient(   this.graph.illuminationNode.ambient.r,
+                       this.graph.illuminationNode.ambient.g,
+                       this.graph.illuminationNode.ambient.b,
+                       this.graph.illuminationNode.ambient.a);
+
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
 

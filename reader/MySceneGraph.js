@@ -440,15 +440,26 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 	var transformationsNode = elements[0];
 
     var transformation = transformationsNode.getElementsByTagName('transformation');
-    var tmpTransformation = new Transformation();
 
     var nnodes = transformation.length;
     for (var i = 0; i < nnodes; i++){
+        var tmpTransformation = new Transformation();
         tmpTransformation.id = this.reader.getString(transformation[i], 'id');
 
         tmpTransformation.translate = this.parsePoint(transformation[i].getElementsByTagName('translate')[0]);
         tmpTransformation.rotate = this.parseRotate(transformation[i].getElementsByTagName('rotate')[0]);
         tmpTransformation.scale = this.parsePoint(transformation[i].getElementsByTagName('scale')[0]);
+
+        if (tmpTransformation.translate.x  == undefined){
+            tmpTransformation.translate = new Point();
+        }
+
+        if (tmpTransformation.rotate.axis == undefined){
+            tmpTransformation.rotate = new Rotate();
+        }
+        if (tmpTransformation.scale.x == undefined){
+            tmpTransformation.scale = new Point();
+        }
 
         console.log("id:" + tmpTransformation.id);
         console.log("translate" + this.logPoint(tmpTransformation.translate));
@@ -622,7 +633,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
     console.log("--> Parsing Components");
 
-    var transformationref, materialsElement, materialref, textureElement, childrenElement;
+    var transformationref, transfid, materialsElement, materialref, textureElement, childrenElement;
 
     var tmpMaterials = [];
     var tmpChildren = [];
@@ -643,8 +654,15 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
         //TODO: add support to inline textures in components
         transformationref = component[i].getElementsByTagName('transformationref')[0];
-        tmpComponent.transformationID = this.reader.getString(transformationref, 'id');
-        console.log("transformation:" + tmpComponent.transformationID);
+        transfid = this.reader.getString(transformationref, 'id');
+
+        for (var j = 0; j < this.transformations.length; j++){
+            if (transfid = this.transformations[j].id){
+                tmpComponent.transformation = this.transformations[j];
+            }
+        }
+
+        console.log("transformation:" + tmpComponent.transformation.id);
 
         //----------------------------------------------------------------------------------------------------------
 

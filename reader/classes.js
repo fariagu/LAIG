@@ -1,5 +1,5 @@
 class Point {
-    constructor(x, y, z){
+    constructor(x = 0, y = 0, z = 0){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -7,7 +7,7 @@ class Point {
 }
 
 class RGBA {
-    constructor(r, g, b, a) {
+    constructor(r = 0, g = 0, b = 0, a = 1) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -81,7 +81,7 @@ class Material {
 }
 
 class Transformation {
-    constructor(id, translate, rotate, scale){
+    constructor(id, translate = null, rotate = null, scale = null){
         this.id = id;
         this.translate = translate;
         this.rotate = rotate;
@@ -90,7 +90,7 @@ class Transformation {
 }
 
 class Rotate {
-    constructor(axis, angle) {
+    constructor(axis = 'x', angle = 0) {
         this.axis = axis;
         this.angle = angle;
     }
@@ -101,67 +101,11 @@ class Primitive {
         this.id = id;
     }
 }
-/*
-class Rectangle extends Primitive {
-    constructor(id, x1, y1, x2, y2){
-        super(id);
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-    }
-}
-
-class Triangle extends Primitive {
-    constructor(id, x1, y1, z1, x2, y2, z2, x3, y3, z3){
-        super(id);
-        this.x1 = x1;
-        this.y1 = y1;
-        this.z1 = z1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.z2 = z2;
-        this.x3 = x3;
-        this.y3 = y3;
-        this.z3 = z3;
-    }
-}
-
-class Cylinder extends Primitive {
-    constructor(id, base, top, height, slices, stacks){
-        super(id);
-        this.base = base;
-        this.top = top;
-        this.height = height;
-        this.slices = slices;
-        this.stacks = stacks;
-    }
-}
-
-class Sphere extends Primitive {
-    constructor(id, radius, slices, stacks){
-        super(id);
-        this.radius = radius;
-        this.slices = slices;
-        this.stacks = stacks;
-    }
-}
-
-class Torus extends Primitive {
-    constructor(id, inner, outer, slices, loops){
-        super(id);
-        this.inner = inner;
-        this.outer = outer;
-        this.slices = slices;
-        this.loops = loops;
-    }
-}
-*/
 
 class Component {
-    constructor(id, transformationID, materials, texture, children, primitive){
+    constructor(id, transformation = null, materials, texture, children, primitive){
         this.id = id;
-        this.transformationID = transformationID;
+        this.transformation = transformation;
         this.materials = materials;
         this.texture = texture;
         this.children = children;

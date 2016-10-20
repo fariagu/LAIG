@@ -40,7 +40,7 @@
     <illumination doublesided="1" local="1" >
 
         <ambient r="0.1" g="0.1" b="0.1" a="0.1" />
-        <background r="0.1" g="0.1" b="0.1" a="0.1" />
+        <background r="1" g="0" b="0" a="1" />
 
     </illumination>
 

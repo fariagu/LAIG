@@ -1,5 +1,14 @@
 
 <dsx>
+    
+    <globals background="0.2 1 0.3 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW"/>
+ 
+
+    <list>
+        <elem id="1" coords="0 0 1"/>
+        <elem id="2" coords="0 1 0"/>
+        <elem id="3" coords="1 0 0"/>
+    </list>
 
     <!-- raiz do grafo e comprimento dos tres eixos -->
     <scene root="root" axis_length="3" />
@@ -92,8 +101,95 @@
     <transformations>
 
         <transformation id="t1">
+          <scale x="1" y="1" z="1" />
+        </transformation>
+        <transformation id="t2">
           <rotate axis="y" angle="90" />
           <scale x="2" y="1" z="1" />
+        </transformation>
+        <transformation id="t3">
+            <scale x="7" y="7" z="7" />
+        </transformation>
+        <transformation id="t4">
+            <translate x="-25" y="-25" z="25" />
+            <rotate axis="x" angle="-90" />
+            <scale x="50" y="50" z="50" />
+        </transformation>
+        <transformation id="t5">
+            <translate x="25" y="25" z="25" />
+            <rotate axis="x" angle="-90" />
+            <scale x="-50" y="50" z="50" />
+        </transformation>
+        <transformation id="t6">
+            <translate x="-25" y="25" z="-25" />
+            <rotate axis="z" angle="-90" />
+            <scale x="50" y="50" z="50" />
+        </transformation>
+        <transformation id="t7">
+            <translate x="-25" y="-25" z="25s" />
+            <rotate axis="y" angle="90" />
+            <scale x="50" y="50" z="50" />
+        </transformation>
+        <transformation id="t8">
+            <translate x="25" y="-25" z="-25" />
+            <rotate axis="y" angle="-90" />
+            <scale x="50" y="50" z="50" />
+        </transformation>
+        <transformation id="t9">
+            <translate x="-25" y="25" z="25" />
+            <rotate axis="x" angle="-180" />
+            <scale x="50" y="50" z="50" />
+        </transformation>
+        <transformation id="t10">
+            <rotate axis="y" angle="-90" />
+            <rotate axis="x" angle="-90" />
+            <scale x="30" y="30" z="30" />
+        </transformation>
+        <transformation id="t11">
+            <translate x="0" y="0.1" z="18" />
+            <rotate axis="y" angle="-90" />
+            <rotate axis="x" angle="-90" />
+            <scale x="5" y="30" z="5" />
+        </transformation>
+        <transformation id="t12">
+            <translate x="15" y="10" z="10" />
+            <rotate axis="x" angle="90" />
+        </transformation>
+        <transformation id="t13">          
+            <scale x="5" y="5" z="10" />
+        </transformation>
+        <transformation id="t14">
+            <translate x="-3.5" y="0" z="10" />
+            <rotate axis="x" angle="-90" />
+            <scale x="7" y="10" z="6" />
+        </transformation>
+        <transformation id="t15">             
+            <scale x="1.5" y="1.5" z="1.5" />
+        </transformation>
+        <transformation id="t16">
+            <translate x="14" y="8" z="12.6" />              
+            <scale x="2" y="2" z="2" />
+        </transformation>
+        <transformation id="t17">
+            <translate x="5" y="0" z="10" />           
+        </transformation>
+        <transformation id="t18">
+            <translate x="0" y="2" z="0"  />     
+            <rotate axis="x" angle="90" />
+            <scale x="0.5" y="0.5" z="2" />
+        </transformation>
+        <transformation id="t19">
+            <translate x="0" y="3" z="0" />
+            <rotate axis="x" angle="-90" />
+            <scale x="3" y="3" z="3" />
+        </transformation>
+        <transformation id="t20">
+            <translate x="25" y="0" z="10" />
+        </transformation>
+        <transformation id="t21">
+            <translate x="0" y="4" z="0" />
+            <rotate axis="x" angle="-90" />
+            <scale x="2" y="2" z="4" />
         </transformation>
 
     </transformations>
@@ -129,7 +225,7 @@
         <component id="root">
            
             <transformation>
-                <scale x="1" y="1" z="1" />
+                <transformationref id ="t1" />
             </transformation>
 
             <materials>
@@ -154,8 +250,7 @@
         <component id="sky">
 
             <transformation>
-
-              <scale x="7" y="7" z="7" />
+                <transformationref id="t3" />
             </transformation>
 
             <materials>
@@ -180,9 +275,7 @@
         <component id="face1">
 
             <transformation>
-              <translate x="-25" y="-25" z="25" />
-              <rotate axis="x" angle="-90" />
-              <scale x="50" y="50" z="50" />
+                <transformationref id="t4" />
             </transformation>
 
             <materials>
@@ -200,9 +293,7 @@
         <component id="face2">
 
             <transformation>
-              <translate x="25" y="25" z="25" />
-              <rotate axis="x" angle="-90" />
-              <scale x="-50" y="50" z="50" />
+                <transformationref id="t5" />
             </transformation>
 
             <materials>
@@ -220,9 +311,7 @@
         <component id="face3">
 
             <transformation>
-              <translate x="-25" y="25" z="-25" />
-              <rotate axis="z" angle="-90" />
-              <scale x="50" y="50" z="50" />
+              <transformationref id="t6" />
             </transformation>
 
             <materials>
@@ -240,9 +329,7 @@
         <component id="face4">
 
             <transformation>
-              <translate x="-25" y="-25" z="25s" />
-              <rotate axis="y" angle="90" />
-              <scale x="50" y="50" z="50" />
+                <transformationref id="t7" />
             </transformation>
 
             <materials>
@@ -260,9 +347,7 @@
         <component id="face5">
 
             <transformation>
-              <translate x="25" y="-25" z="-25" />
-              <rotate axis="y" angle="-90" />
-              <scale x="50" y="50" z="50" />
+                <transformationref id="t8" />
             </transformation>
 
             <materials>
@@ -280,9 +365,7 @@
         <component id="face6">
 
             <transformation>
-              <translate x="-25" y="25" z="25" />
-              <rotate axis="x" angle="-180" />
-              <scale x="50" y="50" z="50" />
+                <transformationref id="t9" />
             </transformation>
 
             <materials>
@@ -300,9 +383,7 @@
         <component id="floor">
             
             <transformation>
-                <rotate axis="y" angle="-90" />
-                <rotate axis="x" angle="-90" />
-                <scale x="30" y="30" z="30" />
+                <transformationref id="t10" />
             </transformation>
 
             <materials>
@@ -320,10 +401,7 @@
         <component id="road">
 
            <transformation>
-                <translate x="0" y="0.1" z="18" />
-                <rotate axis="y" angle="-90" />
-                <rotate axis="x" angle="-90" />
-                <scale x="5" y="30" z="5" />
+                <transformationref id="t11" />
             </transformation>
 
             <materials>
@@ -341,9 +419,7 @@
         <component id="build">
 
             <transformation>
-            <translate x="15" y="10" z="10" />
-            <rotate axis="x" angle="90" />
-                
+                <transformationref id="t12" />   
             </transformation>
 
             <materials>
@@ -363,9 +439,8 @@
 
         <component id="bCyl">
 
-            <transformation>        
-              
-              <scale x="5" y="5" z="10" />
+            <transformation>
+                <transformationref id="t13" />
             </transformation>
 
             <materials>
@@ -383,9 +458,7 @@
         <component id="bSq">
 
             <transformation>
-              <translate x="-3.5" y="0" z="10" />
-              <rotate axis="x" angle="-90" />
-              <scale x="7" y="10" z="6" />
+                <transformationref id="t14" />
             </transformation>
 
             <materials>
@@ -402,8 +475,8 @@
 
         <component id="bTor">
 
-            <transformation>             
-              <scale x="1.5" y="1.5" z="1.5" />
+            <transformation>
+                <transformationref id="t15" />
             </transformation>
 
             <materials>
@@ -421,8 +494,7 @@
           <component id="logo">
 
             <transformation>
-              <translate x="14" y="8" z="12.6" />              
-              <scale x="2" y="2" z="2" />
+                <transformationref id="t16" />
             </transformation>
 
             <materials>
@@ -441,8 +513,7 @@
         <component id="tree1">
 
             <transformation>
-            <translate x="5" y="0" z="10" />           
-                
+                <transformationref id="t17" />    
             </transformation>
 
             <materials>
@@ -461,9 +532,7 @@
         <component id="trunk">
 
             <transformation>
-              <translate x="0" y="2" z="0"  />     
-              <rotate axis="x" angle="90" />
-              <scale x="0.5" y="0.5" z="2" />
+                <transformationref id="t18" />
             </transformation>
 
             <materials>
@@ -481,9 +550,7 @@
         <component id="treetop">
 
             <transformation>
-              <translate x="0" y="3" z="0" />
-              <rotate axis="x" angle="-90" />
-              <scale x="3" y="3" z="3" />
+                <transformationref id="t19" />
             </transformation>
 
             <materials>
@@ -501,9 +568,7 @@
         <component id="tree2">
 
             <transformation>
-            <translate x="25" y="0" z="10" />
-           
-                
+                <transformationref id="t20" />
             </transformation>
 
             <materials>
@@ -522,9 +587,7 @@
         <component id="treetop2">
 
             <transformation>
-              <translate x="0" y="4" z="0" />
-              <rotate axis="x" angle="-90" />
-              <scale x="2" y="2" z="4" />
+                <transformationref id="t21" />
             </transformation>
 
             <materials>

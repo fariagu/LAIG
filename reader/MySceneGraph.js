@@ -4,7 +4,7 @@ function MySceneGraph(filename, scene) {
 	
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
-	scene.graph=this;
+	scene.graph = this;
 		
 	// File reading 
 	this.reader = new CGFXMLreader();
@@ -40,11 +40,7 @@ MySceneGraph.prototype.onXMLReady=function()
 	
 	// Here should go the calls for different functions to parse the various blocks
 	var error = this.parseGlobalsExample(rootElement);
-
-	if (error != null) {
-		this.onXMLError(error);
-		return;
-	}	
+    //var error = null;
 
     this.parseScene(rootElement);
     this.parseViews(rootElement);
@@ -55,6 +51,41 @@ MySceneGraph.prototype.onXMLReady=function()
     this.parseTransformations(rootElement);
     this.parsePrimitives(rootElement);
     this.parseComponents(rootElement);
+
+ /*
+ //Example for traversing all nodes and their information
+    console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+    for(var i = 0; i < this.components.length; i++){
+        //printing component id
+        console.log(i + " - " + this.components[i].id);
+
+        //printing transformationref id
+        console.log("tid: " + this.components[i].transformationID);
+
+        //iterating materials
+        for (var j = 0; j < this.components[i].materials.length; j++){
+            //printing materials
+            console.log("mid: " + this.components[i].materials[j]);
+        }
+
+        //printing texture
+        console.log("texid: " + this.components[i].texture);
+
+        //iterating children
+        for (var j = 0; j < this.components[i].children.length; j++){
+            console.log("compref: " + this.components[i].children[j]);
+        }
+
+        if (this.components[i].primitive != null){
+            console.log("primref: " + this.components[i].primitive);
+        }
+    }
+*/
+
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}
 
 	this.loadedOk=true;
 	
@@ -183,7 +214,7 @@ MySceneGraph.prototype.parseViews= function(rootElement) {
 
     var nnodes = perspective.length;
     for (var i = 0; i < nnodes; i++){
-        tmpPerspective.id = this.reader.getInteger(perspective[i], 'id');
+        tmpPerspective.id = this.reader.getString(perspective[i], 'id');
         tmpPerspective.near = this.reader.getFloat(perspective[i], 'near');
         tmpPerspective.far= this.reader.getFloat(perspective[i], 'far');
         tmpPerspective.angle = this.reader.getFloat(perspective[i], 'angle');
@@ -235,7 +266,7 @@ MySceneGraph.prototype.parseOmni = function(omniElement) {
 
     var id, enabled, location, ambient, diffuse, specular;
 
-    id = this.reader.getInteger(omniElement, 'id');
+    id = this.reader.getString(omniElement, 'id');
 
     if (this.reader.getInteger(omniElement, 'enabled') == 1){
         enabled = true;
@@ -264,7 +295,7 @@ MySceneGraph.prototype.parseSpot = function(spotElement) {
 
     var id, enabled, angle, exponent, target, location, ambient, diffuse, specular;
 
-    id = this.reader.getInteger(spotElement, 'id');
+    id = this.reader.getString(spotElement, 'id');
 
     if (this.reader.getInteger(spotElement, 'enabled') == 1){
         enabled = true;
@@ -329,7 +360,7 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 
     var nnodes = texture.length;
     for (var i = 0; i < nnodes; i++){
-        tmpTexture.id = this.reader.getInteger(texture[i], 'id');
+        tmpTexture.id = this.reader.getString(texture[i], 'id');
         tmpTexture.file = this.reader.getString(texture[i], 'file');
         tmpTexture.length_s= this.reader.getFloat(texture[i], 'length_s');
         tmpTexture.length_t = this.reader.getFloat(texture[i], 'length_t');
@@ -360,7 +391,7 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 
     var nnodes = material.length;
     for (var i = 0; i < nnodes; i++){
-        tmpMaterial.id = this.reader.getInteger(material[i], 'id');
+        tmpMaterial.id = this.reader.getString(material[i], 'id');
 
         tmpMaterial.emission = this.parseRGBA(material[i].getElementsByTagName('emission')[0]);
         tmpMaterial.ambient = this.parseRGBA(material[i].getElementsByTagName('ambient')[0]);
@@ -413,7 +444,7 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 
     var nnodes = transformation.length;
     for (var i = 0; i < nnodes; i++){
-        tmpTransformation.id = this.reader.getInteger(transformation[i], 'id');
+        tmpTransformation.id = this.reader.getString(transformation[i], 'id');
 
         tmpTransformation.translate = this.parsePoint(transformation[i].getElementsByTagName('translate')[0]);
         tmpTransformation.rotate = this.parseRotate(transformation[i].getElementsByTagName('rotate')[0]);
@@ -432,7 +463,6 @@ MySceneGraph.prototype.parseRectangle = function(rectangleElement) {
     if (rectangleElement == null) {
 		return "Rectangle Element is missing.";
 	}
-
     var x1, y1,  x2, y2;
 
     x1 = this.reader.getFloat(rectangleElement, 'x1');
@@ -440,11 +470,11 @@ MySceneGraph.prototype.parseRectangle = function(rectangleElement) {
     x2 = this.reader.getFloat(rectangleElement, 'x2');
     y2 = this.reader.getFloat(rectangleElement, 'y2');
 
-    return new Rectangle(0, x1, y1, x2, y2);
+    return new Rectangle(this.scene, x1, y1, x2, y2);
 }
 
 MySceneGraph.prototype.logRectangle = function(rectangleObject) {
-   return "id:" + rectangleObject.id + " - Rectangle - x1:" + rectangleObject.x1 + ", y1:" + rectangleObject.y1 + ", x2:" + rectangleObject.x2 + ", y2:" + rectangleObject.y2;
+   return "RECTANGLE - x1:" + rectangleObject.point1.x + ", y1:" + rectangleObject.point1.y + ", x2:" + rectangleObject.point2.x + ", y2:" + rectangleObject.point2.y;
 }
 
 MySceneGraph.prototype.parseTriangle = function(triangleElement) {
@@ -464,11 +494,11 @@ MySceneGraph.prototype.parseTriangle = function(triangleElement) {
     y3 = this.reader.getFloat(triangleElement, 'y3');
     z3 = this.reader.getFloat(triangleElement, 'z3');
 
-    return new Triangle(0, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+    return new Triangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 }
 
 MySceneGraph.prototype.logTriangle = function(triangleObject) {
-   return "id:" + triangleObject.id + " - Triangle - x1:" + triangleObject.x1 + ", y1:" + triangleObject.y1 + ", z1:" + triangleObject.z1 + ", x2:" + triangleObject.x2 + ", y2:" + triangleObject.y2 + ", z2:" + triangleObject.z2 + ", x3:" + triangleObject.x3 + ", y3:" + triangleObject.y3 + ", z3:" + triangleObject.z3;
+   return "TRIANGLE - p1(" + triangleObject.point1.x + "," + triangleObject.point1.y + "," + triangleObject.point1.z + "), p2(" + triangleObject.point2.x + "," + triangleObject.point2.y + "," + triangleObject.point2.z + "), p3(" + triangleObject.point3.x + "," + triangleObject.point3.y + "," + triangleObject.point3.z + ")";
 }
 
 MySceneGraph.prototype.parseCylinder = function(cylinderElement) {
@@ -484,11 +514,11 @@ MySceneGraph.prototype.parseCylinder = function(cylinderElement) {
     slices = this.reader.getFloat(cylinderElement, 'slices');
     stacks = this.reader.getFloat(cylinderElement, 'stacks');
 
-    return new Cylinder(0, base, top, height, slices, stacks);
+    return new Cylinder(this.scene, base, top, height, slices, stacks);
 }
 
 MySceneGraph.prototype.logCylinder = function(cylinderObject) {
-   return "id:" + cylinderObject.id + " - Cylinder - base:" + cylinderObject.base + ", top:" + cylinderObject.top + ", height:" + cylinderObject.height + ", slices:" + cylinderObject.slices + ", stacks:" + cylinderObject.stacks;
+   return "CYLINDER - base:" + cylinderObject.base + ", top:" + cylinderObject.top + ", height:" + cylinderObject.height + ", slices:" + cylinderObject.slices + ", stacks:" + cylinderObject.stacks;
 }
 
 MySceneGraph.prototype.parseSphere = function(sphereElement) {
@@ -502,11 +532,11 @@ MySceneGraph.prototype.parseSphere = function(sphereElement) {
     slices = this.reader.getFloat(sphereElement, 'slices');
     stacks = this.reader.getFloat(sphereElement, 'stacks');
 
-    return new Sphere(0, radius, slices, stacks);
+    return new Sphere(this.scene, radius, slices, stacks);
 }
 
 MySceneGraph.prototype.logSphere = function(sphereObject) {
-   return "id:" + sphereObject.id + " - Sphere - radius:" + sphereObject.radius + ", slices:" + sphereObject.slices + ", stacks:" + sphereObject.stacks;
+   return "SPHERE - radius:" + sphereObject.radius + ", slices:" + sphereObject.slices + ", stacks:" + sphereObject.stacks;
 }
 
 MySceneGraph.prototype.parseTorus = function(torusElement) {
@@ -521,11 +551,11 @@ MySceneGraph.prototype.parseTorus = function(torusElement) {
     slices = this.reader.getString(torusElement, 'slices');
     loops = this.reader.getString(torusElement, 'loops');
 
-    return new Torus(0, inner, outer, slices, loops);
+    return new Torus(this.scene, inner, outer, slices, loops);
 }
 
 MySceneGraph.prototype.logTorus = function(torusObject) {
-   return "id:" + torusObject.id + " - Torus - inner:" + torusObject.inner + ", outer:" + torusObject.outer + ", slices:" + torusObject.slices + ", loops:" + torusObject.loops;
+   return "TORUS - inner:" + torusObject.inner + ", outer:" + torusObject.outer + ", slices:" + torusObject.slices + ", loops:" + torusObject.loops;
 }
 
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
@@ -547,7 +577,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 
     var nnodes = primitive.length;
     for (var i = 0; i < nnodes; i++){
-        tmpID = this.reader.getInteger(primitive[i], 'id');
+        tmpID = this.reader.getString(primitive[i], 'id');
 
         nodeName = primitive[i].children[0].nodeName;
         childNode = primitive[i].children[0];
@@ -555,33 +585,23 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 
         switch (nodeName){
             case 'rectangle':
-                tmpPrimitive = new Rectangle();
                 tmpPrimitive = this.parseRectangle(childNode);
-                tmpPrimitive.id = tmpID;
                 console.log(this.logRectangle(tmpPrimitive));
                 break;
             case 'triangle':
-                tmpPrimitive = new Triangle();
                 tmpPrimitive = this.parseTriangle(childNode);
-                tmpPrimitive.id = tmpID;
                 console.log(this.logTriangle(tmpPrimitive));
                 break;
             case 'cylinder':
-                tmpPrimitive = new Cylinder();
                 tmpPrimitive = this.parseCylinder(childNode);
-                tmpPrimitive.id = tmpID;
                 console.log(this.logCylinder(tmpPrimitive));
                 break;
             case 'sphere':
-                tmpPrimitive = new Sphere();
                 tmpPrimitive = this.parseSphere(childNode);
-                tmpPrimitive.id = tmpID;
                 console.log(this.logSphere(tmpPrimitive));
                 break;
             case 'torus':
-                tmpPrimitive = new Torus();
                 tmpPrimitive = this.parseTorus(childNode);
-                tmpPrimitive.id = tmpID;
                 console.log(this.logTorus(tmpPrimitive));
                 break;
             default:
@@ -611,18 +631,19 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	var componentsNode = elements[0];
 
     var component = componentsNode.getElementsByTagName('component');
-    var tmpComponent = new Component();
 
     var nnodes = component.length;
     for (var i = 0; i < nnodes; i++){
-        tmpComponent.id = this.reader.getInteger(component[i], 'id');
+        var tmpComponent = new Component();
+
+        tmpComponent.id = this.reader.getString(component[i], 'id');
         console.log("COMPONENT id:" + tmpComponent.id);
 
         //---------------------------------------------------------------------------------------------------------
 
         //TODO: add support to inline textures in components
         transformationref = component[i].getElementsByTagName('transformationref')[0];
-        tmpComponent.transformationID = this.reader.getInteger(transformationref, 'id');
+        tmpComponent.transformationID = this.reader.getString(transformationref, 'id');
         console.log("transformation:" + tmpComponent.transformationID);
 
         //----------------------------------------------------------------------------------------------------------
@@ -644,7 +665,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         //---------------------------------------------------------------------------------------------------------
 
         textureElement = component[i].getElementsByTagName('texture')[0];
-        tmpComponent.texture = this.reader.getInteger(textureElement, 'id');
+        tmpComponent.texture = this.reader.getString(textureElement, 'id');
         console.log("texture id:" + tmpComponent.texture);
 
         //---------------------------------------------------------------------------------------------------------
@@ -662,12 +683,12 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
             switch(childrenType) {
                 case 'componentref':
-                    tmpComponentref = this.reader.getInteger(childrenElement.children[j], 'id');
+                    tmpComponentref = this.reader.getString(childrenElement.children[j], 'id');
                     console.log('componentref id:' + tmpComponentref);
                     refComponents.push(tmpComponentref);
                     break;
                 case 'primitiveref':
-                    tmpComponent.primitive = this.reader.getInteger(childrenElement.children[j], 'id');
+                    tmpComponent.primitive = this.reader.getString(childrenElement.children[j], 'id');
                     console.log('primitiveref id:' + tmpComponent.primitive);
                     break;
                 default:
@@ -675,7 +696,10 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
             }
         }
 
-        tmpComponent.children = tmpComponentref;
+        tmpComponent.children = refComponents;
+        refComponents = [];
+
+        this.components.push(tmpComponent);
 
     }
 };

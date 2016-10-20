@@ -1,18 +1,19 @@
-function TorusD(scene, inner, outer, slices, loops) {
+function Torus(scene, inner, outer, slices, loops, id = 'torus') {
     CGFobject.call(this, scene);
 
-    this.in = inner;
-    this.out = outer;
+    this.id = id;
+    this.inner = inner;
+    this.outer = outer;
     this.slices = slices;
-    this.stacks = loops;
+    this.loops = loops;
     this.initBuffers();
     
 };
 
-TorusD.prototype = Object.create(CGFobject.prototype);
-TorusD.prototype.constructor = TorusD;
+Torus.prototype = Object.create(CGFobject.prototype);
+Torus.prototype.constructor = Torus;
 
-TorusD.prototype.initBuffers = function() {
+Torus.prototype.initBuffers = function() {
 
     this.vertices = [];
     this.indices = [];
@@ -29,9 +30,9 @@ TorusD.prototype.initBuffers = function() {
             var sinPhi = Math.sin(phi);
             var cosPhi = Math.cos(phi);
 
-            var x = (this.out + (this.in * ct)) * cosPhi;
-            var y = (this.out + (this.in * ct)) * sinPhi
-            var z = this.in * st;
+            var x = (this.outer + (this.inner * ct)) * cosPhi;
+            var y = (this.outer + (this.inner * ct)) * sinPhi
+            var z = this.inner * st;
             var s = 1 - (stack / this.stacks);
             var t = 1 - (slice / this.slices);
 

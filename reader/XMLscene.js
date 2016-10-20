@@ -22,6 +22,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
+/*
     ////////////  Teste   ///////////////
     var p2 = new Point(1,0,0);
     var p1= new Point(2,0,0);
@@ -35,6 +36,7 @@ XMLscene.prototype.init = function (application) {
     this.cylinderD=new CylinderD(this, 2, 1, 1, 30, 10);
     this.torusD = new TorusD(this, 2, 4, 50, 20);
     this.sphereD = new SphereD(this, 1, 50, 50);
+*/
 };
 
 XMLscene.prototype.initLights = function () {
@@ -66,6 +68,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
+
 };
 
 XMLscene.prototype.display = function () {
@@ -86,7 +89,15 @@ XMLscene.prototype.display = function () {
 	this.axis.display();
 
     //TODO: completar
-    //this.processGraph(rootNode);
+    this.processGraph(this.graph.components[0].id);
+
+    /*
+    console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+    console.log(this.graph.components[0].id);
+
+    for (var i = 0; i < this.graph.components.length; i++){
+        console.log(i + ": " + this.graph.components[i].id);
+    }*/
 
 	this.setDefaultAppearance();
 	
@@ -95,16 +106,10 @@ XMLscene.prototype.display = function () {
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
-	if (this.graph.loadedOk)
-	{
+	if (this.graph.loadedOk){
 		this.lights[0].update();
-
-                //--------------
-        //this.pushMatrix();
-
-        //this.popMatrix();
 	};	
-
+/*
      ///////////    Teste    ///////////
         this.triangleD.display();
         //console.log(">>triangle loaded");
@@ -114,18 +119,31 @@ XMLscene.prototype.display = function () {
         //console.log(">>cyl loaded");
         this.torusD.display();
         this.sphereD.display();
-
+*/
 };
 
-/*
+
 XMLScene.prototype.processGraph = function(nodeName) {
     var material = null;
 
     if (nodeName != null){
-        var node = this.graph[nodeName];
+        var node, pos;
+        for (var i = 0; i < this.graph.materials.length; i++){
+            if (this.graph.components[i].id == nodeName){
+                pos = i;
+                break;
+            }
+        }
 
-        if (node.material != null){
-            material = node.material;
+        node = this.graph.components[pos];
+
+        if (node.materials != null){
+            for (var i = 0; i < this.graph.materials.length; i++){
+                if (this.graph.materials[i].id == node.materials[0]){
+                    material = this.graph.materials[i];
+                    break;
+                }
+            }
 
             if (material != null){
                 this.applyMaterial(material);
@@ -142,4 +160,4 @@ XMLScene.prototype.processGraph = function(nodeName) {
             }
         }
     }
-}*/
+}

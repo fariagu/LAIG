@@ -89,7 +89,7 @@ XMLscene.prototype.display = function () {
 	this.axis.display();
 
     //TODO: completar
-    this.processGraph(this.graph.components[0].id);
+    //this.processGraph(this.graph.components[0].id);
 
     /*
     console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
@@ -122,7 +122,7 @@ XMLscene.prototype.display = function () {
 */
 };
 
-
+/*
 XMLScene.prototype.processGraph = function(nodeName) {
     var material = null;
 
@@ -160,4 +160,4 @@ XMLScene.prototype.processGraph = function(nodeName) {
             }
         }
     }
-}
+}*/

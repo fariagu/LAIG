@@ -22,7 +22,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
-/*
+
     ////////////  Teste   ///////////////
     var p2 = new Point(1,0,0);
     var p1= new Point(2,0,0);
@@ -36,7 +36,7 @@ XMLscene.prototype.init = function (application) {
     this.cylinder=new Cylinder(this, 2, 1, 1, 30, 10);
     this.torus = new Torus(this, 2, 4, 50, 20);
     this.sphere = new Sphere(this, 1, 50, 50);
-*/
+
 };
 
 XMLscene.prototype.initLights = function () {
@@ -77,7 +77,45 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
+};
 
+XMLscene.prototype.processGraph = function(node) {
+    var material = null;
+
+    if (node != null){
+
+
+        if (node.materials != null){
+            material = node.materials[0];
+
+            if (material != null){
+                //this.applyMaterial(material);
+                //this.nullMatrix(node.matrix);   //<--- ??
+                if (node.primitive == null){
+
+                    for (var i=0; i < node.children.length; i++){
+                        this.pushMatrix();
+
+                        //this.applyMaterial(material);
+                        for (var j = 0; j < this.graph.components.length; j++){
+                            if (node.children[i] == this.graph.components[j].id){
+                                this.processGraph(this.graph.components[j]);
+                            }
+                        }
+                        //this.processGraph(node.children[i]);
+
+                        this.popMatrix();
+                    }
+                }
+                else {
+                    if (node.primitive.id == 'rectangle'){
+                        node.primitive.display();
+                    }
+                    //node.primitive.display();
+                }
+            }
+        }
+    }
 };
 
 XMLscene.prototype.display = function () {
@@ -97,17 +135,6 @@ XMLscene.prototype.display = function () {
 	// Draw axis
 	this.axis.display();
 
-    //TODO: completar
-    //this.processGraph(this.graph.components[0].id);
-
-    /*
-    console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-    console.log(this.graph.components[0].id);
-
-    for (var i = 0; i < this.graph.components.length; i++){
-        console.log(i + ": " + this.graph.components[i].id);
-    }*/
-
 	this.setDefaultAppearance();
 	
 	// ---- END Background, camera and axis setup
@@ -117,56 +144,14 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk){
 		this.lights[0].update();
-	};	
-/*
-     ///////////    Teste    ///////////
-        this.triangleD.display();
-        //console.log(">>triangle loaded");
-        this.rectangleD.display();
-        //console.log(">>rect loaded");
-        this.cylinderD.display();
-        //console.log(">>cyl loaded");
-        this.torusD.display();
-        this.sphereD.display();
-*/
-};
-
-/*
-XMLScene.prototype.processGraph = function(nodeName) {
-    var material = null;
-
-    if (nodeName != null){
-        var node, pos;
-        for (var i = 0; i < this.graph.materials.length; i++){
-            if (this.graph.components[i].id == nodeName){
-                pos = i;
-                break;
-            }
-        }
-
-        node = this.graph.components[pos];
-
-        if (node.materials != null){
-            for (var i = 0; i < this.graph.materials.length; i++){
-                if (this.graph.materials[i].id == node.materials[0]){
-                    material = this.graph.materials[i];
-                    break;
-                }
-            }
-
-            if (material != null){
-                this.applyMaterial(material);
-                this.nullMatrix(node.matrix);
-
-                for (var i=0; i < node.children.length; i++){
-                    this.pushMatrix();
-
-                    this.applyMaterial(material);
-                    this.processGraph(node.children[i]);
-
-                    this.popMatrix();
-                }
-            }
-        }
+        this.processGraph(this.graph.components[0]);
     }
-}*/
+
+     ///////////    Teste    ///////////
+        //this.triangle.display();
+        //this.rectangle.display();
+        //this.cylinder.display();
+        //this.torus.display();
+        //this.sphere.display();
+
+};

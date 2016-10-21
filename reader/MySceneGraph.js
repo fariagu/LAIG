@@ -356,10 +356,11 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 	var texturesNode = elements[0];
 
     var texture = texturesNode.getElementsByTagName('texture');
-    var tmpTexture = new Texture();
 
     var nnodes = texture.length;
     for (var i = 0; i < nnodes; i++){
+        var tmpTexture = new Texture();
+
         tmpTexture.id = this.reader.getString(texture[i], 'id');
         tmpTexture.file = this.reader.getString(texture[i], 'file');
         tmpTexture.length_s= this.reader.getFloat(texture[i], 'length_s');
@@ -387,10 +388,11 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 	var materialsNode = elements[0];
 
     var material = materialsNode.getElementsByTagName('material');
-    var tmpMaterial = new Material();
 
     var nnodes = material.length;
     for (var i = 0; i < nnodes; i++){
+        var tmpMaterial = new Material();
+
         tmpMaterial.id = this.reader.getString(material[i], 'id');
 
         tmpMaterial.emission = this.parseRGBA(material[i].getElementsByTagName('emission')[0]);
@@ -633,7 +635,8 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
     console.log("--> Parsing Components");
 
-    var transformationref, transfid, materialsElement, materialref, textureElement, childrenElement;
+    var transformationref, materialsElement, materialref, textureElement, childrenElement;
+    var transfid, matid, texid, childid, primid;
 
     var tmpMaterials = [];
     var tmpChildren = [];
@@ -657,7 +660,7 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         transfid = this.reader.getString(transformationref, 'id');
 
         for (var j = 0; j < this.transformations.length; j++){
-            if (transfid = this.transformations[j].id){
+            if (transfid == this.transformations[j].id){
                 tmpComponent.transformation = this.transformations[j];
             }
         }
@@ -671,10 +674,15 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         var jnodes = materialsElement.children.length;
         for (var j = 0; j < jnodes; j++){
             materialref = materialsElement.getElementsByTagName('material')[j];//materialref.nodeName = material
-            //console.log("material id:" + this.reader.getString(materialref, 'id'));
-            tmpMaterials.push(this.reader.getString(materialref, 'id'));
 
-            console.log("material id:" + tmpMaterials[j]);
+            matid = this.reader.getString(materialref, 'id');
+            for (var k = 0; k < this.materials.length; k++){
+                if (matid == this.materials[k].id){
+                    tmpMaterials.push(this.materials[k]);
+                }
+            }
+
+            console.log("material id:" + tmpMaterials[j].id);
         }
 
         tmpComponent.materials = tmpMaterials;
@@ -683,13 +691,30 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         //---------------------------------------------------------------------------------------------------------
 
         textureElement = component[i].getElementsByTagName('texture')[0];
-        tmpComponent.texture = this.reader.getString(textureElement, 'id');
-        console.log("texture id:" + tmpComponent.texture);
+
+        texid = this.reader.getString(textureElement, 'id');
+
+        if (texid == 'inherit'){
+            for (var j = 0; j < this.components.length; j++){
+                for (var k = 0; k < this.components[j].children.length; k++){
+                    if (this.components[j].children[k] == tmpComponent.id){//remember to replace with pointer and not just identifier
+                        texid = this.components[j].texture.id;
+                    }
+                }
+            }
+        }
+
+        for (var j = 0; j < this.textures.length; j++){
+            if (texid == this.textures[j].id){
+                tmpComponent.texture = this.textures[j];
+            }
+        }
+        console.log("texture id:" + tmpComponent.texture.id);
 
         //---------------------------------------------------------------------------------------------------------
 
         childrenElement = component[i].getElementsByTagName('children')[0];
-        tmpComponent.primitive = null;
+        //tmpComponent.primitive = null;
 
         var refComponents = [];
         var tmpComponentref;
@@ -706,8 +731,14 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
                     refComponents.push(tmpComponentref);
                     break;
                 case 'primitiveref':
-                    tmpComponent.primitive = this.reader.getString(childrenElement.children[j], 'id');
-                    console.log('primitiveref id:' + tmpComponent.primitive);
+                    primid = this.reader.getString(childrenElement.children[j], 'id');
+                    for (var j = 0; j < this.primitives.length; j++){
+                        if (primid == this.primitives[j].id){
+                            tmpComponent.primitive = this.primitives[j];
+                        }
+                    }
+
+                    console.log('primitiveref id:' + tmpComponent.primitive.id);
                     break;
                 default:
                     break;
@@ -720,6 +751,22 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         this.components.push(tmpComponent);
 
     }
+    /*
+    //replace child array of identifiers by array of actual component pointers
+    for (var i = 0; i < this.components.length; i++){
+        if (this.components[i].primitive != null){
+            var childrenArray = [];
+            for (var j = 0; j < this.components[i].children.length; j++){
+                for (var k = i; k < this.components.length; k++){
+                    if (this.components[i].children[j] == this.components[k].id){
+                        //this.components[i].children[j] = this.components[k];
+                        childrenArray.push(this.components[k]);
+                    }
+                }
+            }
+            this.components[i].children = childrenArray;
+        }
+    }*/
 };
 
 	

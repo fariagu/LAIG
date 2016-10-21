@@ -54,6 +54,7 @@ class Spot {
         this.angle = angle;
         this.exponent = exponent;
         this.target = target;
+        this.location = location;
         this.ambient = ambient;
         this.diffuse = diffuse;
         this.specular = specular;
@@ -103,9 +104,9 @@ class Primitive {
 }
 
 class Component {
-    constructor(id, transformation = null, materials, texture, children, primitive){
+    constructor(id, materials, texture, children, primitive){
         this.id = id;
-        this.transformation = transformation;
+        this.transformation = [];
         this.materials = materials;
         this.texture = texture;
         this.children = children;

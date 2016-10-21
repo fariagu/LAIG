@@ -661,11 +661,11 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 
         for (var j = 0; j < this.transformations.length; j++){
             if (transfid == this.transformations[j].id){
-                tmpComponent.transformation = this.transformations[j];
+                tmpComponent.transformation.push(this.transformations[j]);
             }
         }
 
-        console.log("transformation:" + tmpComponent.transformation.id);
+        console.log("transformation:" + tmpComponent.transformation[0].id);
 
         //----------------------------------------------------------------------------------------------------------
 
@@ -704,11 +704,17 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
             }
         }
 
-        for (var j = 0; j < this.textures.length; j++){
-            if (texid == this.textures[j].id){
-                tmpComponent.texture = this.textures[j];
+        if (texid != 'none'){
+            for (var j = 0; j < this.textures.length; j++){
+                if (texid == this.textures[j].id){
+                    tmpComponent.texture = this.textures[j];
+                }
             }
         }
+        else {
+            tmpComponent.texture = new Texture(texid, null, null, null);
+        }
+
         console.log("texture id:" + tmpComponent.texture.id);
 
         //---------------------------------------------------------------------------------------------------------
@@ -751,10 +757,10 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         this.components.push(tmpComponent);
 
     }
-    /*
+
     //replace child array of identifiers by array of actual component pointers
     for (var i = 0; i < this.components.length; i++){
-        if (this.components[i].primitive != null){
+        if (this.components[i].primitive == null){
             var childrenArray = [];
             for (var j = 0; j < this.components[i].children.length; j++){
                 for (var k = i; k < this.components.length; k++){
@@ -765,6 +771,30 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
                 }
             }
             this.components[i].children = childrenArray;
+        }
+    }
+
+    for (var i = 0; i < this.components.length; i++){
+        console.log("comp-" + this.components[i].id);
+
+        for (var j = 0; j < this.components[i].children.length; j++){
+            console.log("--> " + this.components[i].children[j].id);
+        }
+    }
+
+    /*
+    for (var i = 0; i < this.components.length; i++){
+        for (var j = 0; j < this.components[i].children.length; j++){
+            var tmpTransf = this.components[i].transformation;
+            tmpTransf.push(this.components[i].children[j].transformation[0]);
+            this.components[i].children[j].transformation = tmpTransf;
+        }
+    }
+
+    for (var i = 0; i < this.components.length; i++){
+        console.log("COMP ID: " + this.components[i].id);
+        for (var j = 0; j < this.components[i].transformation.length; j++){
+            console.log("transf-" + this.components[i].transformation[j].id);
         }
     }*/
 };

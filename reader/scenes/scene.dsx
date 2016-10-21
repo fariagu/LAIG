@@ -628,7 +628,7 @@
 
         </component>
         
-          <component id="logo">
+        <component id="logo">
 
             <transformation>
                 <transformationref id="t16" />
@@ -689,6 +689,7 @@
 
             <transformation>
                 <transformationref id="t19" />
+            </transformation>
 
             <materials>
                 <material id="mix"/>
@@ -825,7 +826,7 @@
                 <material id="spec"/>
             </materials>
 
-            <texture id="bl" />
+            <texture id="blackTex" />
 
             <children>
                 <componentref id="post" />

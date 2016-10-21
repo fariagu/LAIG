@@ -476,7 +476,7 @@ MySceneGraph.prototype.parseRectangle = function(rectangleElement) {
     if (rectangleElement == null) {
 		return "Rectangle Element is missing.";
 	}
-    var x1, y1,  x2, y2;
+    var x1, y1, x2, y2;
 
     x1 = this.reader.getFloat(rectangleElement, 'x1');
     y1 = this.reader.getFloat(rectangleElement, 'y1');
@@ -559,10 +559,10 @@ MySceneGraph.prototype.parseTorus = function(torusElement) {
 
     var inner, outer, slices, loops;
 
-    inner = this.reader.getString(torusElement, 'inner');
-    outer = this.reader.getString(torusElement, 'outer');
-    slices = this.reader.getString(torusElement, 'slices');
-    loops = this.reader.getString(torusElement, 'loops');
+    inner = this.reader.getFloat(torusElement, 'inner');
+    outer = this.reader.getFloat(torusElement, 'outer');
+    slices = this.reader.getFloat(torusElement, 'slices');
+    loops = this.reader.getFloat(torusElement, 'loops');
 
     return new Torus(this.scene, inner, outer, slices, loops);
 }

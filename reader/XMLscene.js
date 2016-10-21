@@ -34,7 +34,7 @@ XMLscene.prototype.init = function (application) {
     this.triangle=new Triangle(this, p2, p1, p4);
     this.rectangle=new Rectangle(this, p3, p5);
     this.cylinder=new Cylinder(this, 2, 1, 1, 30, 10);
-    this.torus = new Torus(this, 2, 4, 50, 20);
+    this.torus = new Torus(this, 0.5, 1, 50, 50);
     this.sphere = new Sphere(this, 1, 50, 50);
 
 };
@@ -108,10 +108,11 @@ XMLscene.prototype.processGraph = function(node) {
                     }
                 }
                 else {
+                    /*
                     if (node.primitive.id == 'rectangle'){
                         node.primitive.display();
-                    }
-                    //node.primitive.display();
+                    }*/
+                    node.primitive.display();
                 }
             }
         }

@@ -372,14 +372,14 @@
 
             <children>
                 <componentref id="sky" />
-                <componentref id="floor" /> 
+                <componentref id="floor" />
                 <componentref id="road" />
-                <componentref id="build" /> 
+                <componentref id="build" />
                 <componentref id="tree1" />                        
                 <componentref id="tree2" />
                 <componentref id="spots" />
                 <componentref id="lPosts" />
-                <componentref id="bus" />                                
+                <componentref id="bus" />                               
             </children>
 
         </component>
@@ -406,7 +406,7 @@
             </children>
 
         </component>
-
+<!--
         <component id="face1">
 
             <transformation>
@@ -514,7 +514,7 @@
             </children>
 
         </component>
-
+-->
         <component id="floor">
             
             <transformation>

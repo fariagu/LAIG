@@ -449,7 +449,11 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
         tmpTransformation.id = this.reader.getString(transformation[i], 'id');
 
         tmpTransformation.translate = this.parsePoint(transformation[i].getElementsByTagName('translate')[0]);
-        tmpTransformation.rotate = this.parseRotate(transformation[i].getElementsByTagName('rotate')[0]);
+
+        for (var j = 0; j < transformation[i].getElementsByTagName('rotate').length; j++){
+            tmpTransformation.rotate.push(this.parseRotate(transformation[i].getElementsByTagName('rotate')[j]));
+        }
+
         tmpTransformation.scale = this.parsePoint(transformation[i].getElementsByTagName('scale')[0]);
 
         if (tmpTransformation.translate.x  == undefined){
@@ -457,7 +461,7 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
         }
 
         if (tmpTransformation.rotate.axis == undefined){
-            tmpTransformation.rotate = new Rotate();
+            tmpTransformation.rotate.push(new Rotate());
         }
         if (tmpTransformation.scale.x == undefined){
             tmpTransformation.scale = new Point();
@@ -465,7 +469,9 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 
         console.log("id:" + tmpTransformation.id);
         console.log("translate" + this.logPoint(tmpTransformation.translate));
-        console.log("rotate: " + this.logRotate(tmpTransformation.rotate));
+        for (var j = 0; j < tmpTransformation.rotate.length; j++){
+            console.log("rotate: " + this.logRotate(tmpTransformation.rotate[j]));
+        }
         console.log("scale" + this.logPoint(tmpTransformation.scale));
 
         this.transformations.push(tmpTransformation);
@@ -774,29 +780,23 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
         }
     }
 
+
+    for (var i = 0; i < this.components.length; i++){
+        for (var j = 0; j < this.components[i].children.length; j++){
+            for (var k = 0; k < this.components[i].transformation.length; k++){
+                var trans = this.components[i].transformation[k];
+                this.components[i].children[j].transformation.push(trans);
+            }
+        }
+    }
+
     for (var i = 0; i < this.components.length; i++){
         console.log("comp-" + this.components[i].id);
 
-        for (var j = 0; j < this.components[i].children.length; j++){
-            console.log("--> " + this.components[i].children[j].id);
-        }
-    }
-
-    /*
-    for (var i = 0; i < this.components.length; i++){
-        for (var j = 0; j < this.components[i].children.length; j++){
-            var tmpTransf = this.components[i].transformation;
-            tmpTransf.push(this.components[i].children[j].transformation[0]);
-            this.components[i].children[j].transformation = tmpTransf;
-        }
-    }
-
-    for (var i = 0; i < this.components.length; i++){
-        console.log("COMP ID: " + this.components[i].id);
         for (var j = 0; j < this.components[i].transformation.length; j++){
-            console.log("transf-" + this.components[i].transformation[j].id);
+            console.log("--> " + this.components[i].transformation[j].id);
         }
-    }*/
+    }
 };
 
 	

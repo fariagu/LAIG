@@ -22,21 +22,6 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
-/*
-    ////////////  Teste   ///////////////
-    var p2 = new Point(1,0,0);
-    var p1= new Point(2,0,0);
-    var p3 = new Point(0,1,0);
-
-    var p4 = new Point(1,1,0);
-    var p5 = new Point(1,2,0)
-
-    this.triangle=new Triangle(this, p2, p1, p4);
-    this.rectangle=new Rectangle(this, p3, p5);
-    this.cylinder=new Cylinder(this, 2, 1, 1, 30, 10);
-    this.torus = new Torus(this, 0.5, 1, 50, 50);
-    this.sphere = new Sphere(this, 1, 50, 50);*/
-
 };
 
 XMLscene.prototype.initLights = function () {
@@ -78,7 +63,7 @@ XMLscene.prototype.initDSXLights = function () {
         this.lights[i].setDiffuse(spot.diffuse.r, spot.diffuse.g, spot.diffuse.b, spot.diffuse.a);
         this.lights[i].setSpecular(spot.specular.r, spot.specular.g, spot.specular.b, spot.specular.a);
         this.lights[i].setSpotExponent(spot.exponent);
-        this.lights[i].setSpotDirection(spot.direction.x, spot.direction.y, spot.direction.z);
+        this.lights[i].setSpotDirection(spot.target.x, spot.target.y, spot.target.z);
     }
 }
 
@@ -115,76 +100,64 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 XMLscene.prototype.transformation = function(node) {
 
-    switch(node.transformation[0].rotate.axis){
-        case 'x':
-            node.primitive.scene.rotate(node.transformation[0].rotate.angle, 1, 0, 0);
-            break;
-        case 'y':
-            node.primitive.scene.rotate(node.transformation[0].rotate.angle, 0, 1, 0);
-            break;
-        case 'z':
-            node.primitive.scene.rotate(node.transformation[0].rotate.angle, 0, 0, 1);
-            break;
-        default:
-            break;
+    for (var i = node.transformation.length - 1; i >= 0; i--){
+
+        if (node.transformation[i].translate != null){
+            node.primitive.scene.translate( node.transformation[i].translate.x,
+                                            node.transformation[i].translate.y,
+                                            node.transformation[i].translate.z);
+        }
+
+        for (var j = 0; j < node.transformation[i].rotate.length; j++){
+
+            switch(node.transformation[i].rotate[j].axis){
+                case 'x':
+                    node.primitive.scene.rotate(node.transformation[i].rotate[j].angle * Math.PI / 180, 1, 0, 0);
+                    break;
+                case 'y':
+                    node.primitive.scene.rotate(node.transformation[i].rotate[j].angle * Math.PI / 180, 0, 1, 0);
+                    break;
+                case 'z':
+                    node.primitive.scene.rotate(node.transformation[i].rotate[j].angle * Math.PI / 180, 0, 0, 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (node.transformation[i].scale != null){
+            node.primitive.scene.scale( node.transformation[i].scale.x,
+                                        node.transformation[i].scale.y,
+                                        node.transformation[i].scale.z);
+        }
     }
-
-    node.primitive.scene.translate( node.transformation[0].translate.x,
-                                    node.transformation[0].translate.y,
-                                    node.transformation[0].translate.z);
-
-    node.primitive.scene.scale( node.transformation[0].scale.x,
-                                node.transformation[0].scale.y,
-                                node.transformation[0].scale.z);
-
 };
 
 XMLscene.prototype.processGraph = function(node) {
     var material = null;
 
-    if (node != null){
+    for (var i = 0; i < this.graph.components.length; i++){
+        node = this.graph.components[i];
 
+        if (node != null){
 
-        if (node.materials != null){
-            material = node.materials[0];
+            if (node.materials != null){
+                material = node.materials[0];
 
-            if (material != null){
-                //this.applyMaterial(material);
-                //this.nullMatrix(node.matrix);   //<--- ??
-                if (node.primitive == null){
+                if (material != null){
+                    //this.applyMaterial(material);
+                    //this.nullMatrix(node.matrix);   //<--- ??
+                    if (node.primitive != null){
 
-                    for (var i=0; i < node.children.length; i++){
                         this.pushMatrix();
-                        /*
+
                         //this.applyMaterial(material);
-                        for (var j = 0; j < this.graph.components.length; j++){
-                            if (node.children[i] == this.graph.components[j].id){
-                                this.pushMatrix();
 
-                                this.transformation(node);
-                                this.processGraph(this.graph.components[j]);
-
-                                this.popMatrix();
-                            }
-                        }*/
-
-
-                        this.processGraph(node.children[i]);
+                        this.transformation(node);
+                        node.primitive.display();
 
                         this.popMatrix();
                     }
-                }
-                else {
-                    /*
-                    if (node.primitive.id == 'rectangle'){
-                        node.primitive.display();
-                    }*/
-                    this.pushMatrix();
-
-                    this.transformation(node);
-                    node.primitive.display();
-
-                    this.popMatrix();
                 }
             }
         }
@@ -221,12 +194,4 @@ XMLscene.prototype.display = function () {
         }
         this.processGraph(this.graph.components[0]);
     }
-
-     ///////////    Teste    ///////////
-        //this.triangle.display();
-        //this.rectangle.display();
-        //this.cylinder.display();
-        //this.torus.display();
-        //this.sphere.display();
-
 };

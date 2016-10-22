@@ -82,7 +82,7 @@ class Material {
 }
 
 class Transformation {
-    constructor(id, translate = null, rotate = null, scale = null){
+    constructor(id, translate = null, rotate = [], scale = null){
         this.id = id;
         this.translate = translate;
         this.rotate = rotate;

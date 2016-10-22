@@ -124,12 +124,12 @@ XMLscene.prototype.transformation = function(node) {
                     break;
             }
         }
-
+/*
         if (node.transformation[i].scale != null){
             node.primitive.scene.scale( node.transformation[i].scale.x,
                                         node.transformation[i].scale.y,
                                         node.transformation[i].scale.z);
-        }
+        }*/
     }
 };
 

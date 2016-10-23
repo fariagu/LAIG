@@ -464,7 +464,7 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
             tmpTransformation.rotate.push(new Rotate());
         }
         if (tmpTransformation.scale.x == undefined){
-            tmpTransformation.scale = new Point();
+            tmpTransformation.scale = new Point(1, 1, 1);
         }
 
         console.log("id:" + tmpTransformation.id);

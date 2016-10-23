@@ -85,6 +85,10 @@ Cylinder.prototype.initBuffers = function() {
        this.indices.push(aux-(i+2),aux-1,aux-(i+3));
     }
 
+    for (var i = 2; i < this.vertices.length; i+=3){
+        this.vertices[i] += height/2;
+    }
+
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
 };

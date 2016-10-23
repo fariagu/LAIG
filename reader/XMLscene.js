@@ -22,6 +22,8 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
+    this.triangle = new Triangle(this, 0, 0, 0, 0, 2, 0, 2, 0, 0);
+
 };
 
 XMLscene.prototype.initLights = function () {
@@ -99,6 +101,44 @@ XMLscene.prototype.onGraphLoaded = function ()
 };
 
 XMLscene.prototype.transformation = function(node) {
+    /*
+    for (var i = node.transformation.length - 1; i >= 0; i--){
+        var matrix = mat4.create();
+        matrix = mat4.identity(matrix);
+
+        if (node.transformation[i].translate != null){
+            matrix = mat4.translate(matrix, matrix, [node.transformation[i].translate.x,
+                                                     node.transformation[i].translate.y,
+                                                     node.transformation[i].translate.z]);
+        }
+
+        for (var j = 0; j < node.transformation[i].rotate.length; j++){
+
+            switch(node.transformation[i].rotate[j].axis){
+                case 'x':
+                    matrix = mat4.rotateX(matrix, matrix, node.transformation[i].rotate[j].angle * Math.PI / 180);
+                    break;
+                case 'y':
+                    matrix = mat4.rotateY(matrix, matrix, node.transformation[i].rotate[j].angle * Math.PI / 180);
+                    break;
+                case 'z':
+                    matrix = mat4.rotateZ(matrix, matrix, node.transformation[i].rotate[j].angle * Math.PI / 180);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (node.transformation[i].scale != null){
+            matrix = mat4.scale(matrix, matrix, [node.transformation[i].scale.x,
+                                                 node.transformation[i].scale.y,
+                                                 node.transformation[i].scale.z]);
+        }
+
+        node.primitive.scene.multMatrix(matrix);
+
+    }*/
+
 
     for (var i = node.transformation.length - 1; i >= 0; i--){
 
@@ -124,12 +164,12 @@ XMLscene.prototype.transformation = function(node) {
                     break;
             }
         }
-/*
+
         if (node.transformation[i].scale != null){
             node.primitive.scene.scale( node.transformation[i].scale.x,
                                         node.transformation[i].scale.y,
                                         node.transformation[i].scale.z);
-        }*/
+        }
     }
 };
 
@@ -141,10 +181,10 @@ XMLscene.prototype.processGraph = function(node) {
 
         if (node != null){
 
-            if (node.materials != null){
-                material = node.materials[0];
+            //if (node.materials != null){
+                //material = node.materials[0];
 
-                if (material != null){
+                //if (material != null){
                     //this.applyMaterial(material);
                     //this.nullMatrix(node.matrix);   //<--- ??
                     if (node.primitive != null){
@@ -158,8 +198,8 @@ XMLscene.prototype.processGraph = function(node) {
 
                         this.popMatrix();
                     }
-                }
-            }
+                //}
+            //}
         }
     }
 };
@@ -194,4 +234,11 @@ XMLscene.prototype.display = function () {
         }
         this.processGraph(this.graph.components[0]);
     }
+    /*
+    this.triangle.scene.rotate(-Math.PI/4, 0, 0, 1);
+    this.triangle.scene.translate(0, 4, 0);
+    this.triangle.scene.rotate(Math.PI, 1, 0, 0);
+    this.triangle.scene.scale(2, 2, 2);
+    //this.triangle.scene.scale(2, 1, 1);
+    this.triangle.display();*/
 };

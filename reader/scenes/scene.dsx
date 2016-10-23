@@ -558,9 +558,12 @@
             </transformation>
 
             <materials>
+                <material id="dif" />
+                <!--
                 <material id="spec" />
                 <material id="mix" />
                 <material id="flu" />
+                -->
             </materials>
 
             <texture id="brick" />
@@ -581,7 +584,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="build" />
@@ -599,7 +602,7 @@
             </transformation>
 
             <materials>
-                <material id="mix"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="inherit" />
@@ -617,7 +620,7 @@
             </transformation>
 
             <materials>
-                <material id="mix"  />              
+                <material id="dif"  />              
             </materials>
 
             <texture id="roof" />
@@ -635,7 +638,7 @@
             </transformation>
 
             <materials>
-                <material id="flu"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="logo" />
@@ -654,7 +657,7 @@
             </transformation>
 
             <materials>
-                <material id="mix" />
+                <material id="dif" />
             </materials>
 
             <texture id="treetop" />
@@ -692,7 +695,7 @@
             </transformation>
 
             <materials>
-                <material id="mix"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="treetop" />
@@ -710,7 +713,7 @@
             </transformation>
 
             <materials>
-                <material id="mix" />
+                <material id="dif" />
             </materials>
 
             <texture id="treetop" />
@@ -729,7 +732,7 @@
             </transformation>
 
             <materials>
-                <material id="mix"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="inherit" />
@@ -747,7 +750,7 @@
             </transformation>
 
             <materials>
-                <material id="spec" />
+                <material id="dif" />
             </materials>
 
             <texture id="blackTex" />
@@ -767,7 +770,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="inherit" />
@@ -785,7 +788,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="inherit" />
@@ -803,7 +806,7 @@
             </transformation>
 
             <materials>
-                <material id="spec" />
+                <material id="dif" />
             </materials>
 
             <texture id="blackTex" />
@@ -823,7 +826,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="blackTex" />
@@ -842,7 +845,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="none" />
@@ -861,7 +864,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="blackTex" />
@@ -879,7 +882,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="glass" />
@@ -898,8 +901,11 @@
             </transformation>
 
             <materials>
+                <material id="dif" />
+                <!--
                 <material id="spec" />
                 <material id="mix" />
+                -->
             </materials>
 
             <texture id="roof" />
@@ -919,7 +925,7 @@
             </transformation>
 
             <materials>
-                <material id="spec" />
+                <material id="dif" />
             </materials>
 
             <texture id="none" />
@@ -942,7 +948,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="bust" />
@@ -960,7 +966,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="roof" />
@@ -979,7 +985,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="busf" />
@@ -998,7 +1004,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="busb" />
@@ -1017,7 +1023,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="busr" />
@@ -1036,7 +1042,7 @@
             </transformation>
 
             <materials>
-                <material id="spec"/>
+                <material id="dif"/>
             </materials>
 
             <texture id="busl" />
